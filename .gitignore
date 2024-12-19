@@ -1,0 +1,16 @@
+src/keycontrol.Api/bin/
+src/keycontrol.Api/obj/
+src/keycontrol.Api/Properties/
+src/keycontrol.Test/bin/
+src/keycontrol.Test/obj/
+src/keycontrol.Test/Properties/
+src/keycontrol.Api/appsettings.Development.json
+src/keycontrol.Application/bin/
+src/keycontrol.Application/obj/
+src/keycontrol.Application/Properties/
+src/keycontrol.Domain/bin/
+src/keycontrol.Domain/obj/
+src/keycontrol.Domain/Properties/
+src/keycontrol.Infrastructure/bin/
+src/keycontrol.Infrastructure/obj/
+src/keycontrol.Infrastructure/Properties/
