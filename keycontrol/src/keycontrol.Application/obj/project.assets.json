@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net9.0": {}
+    "net9.0": {
+      "keycontrol.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/keycontrol.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/keycontrol.Domain.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "keycontrol.Domain/1.0.0": {
+      "type": "project",
+      "path": "../keycontrol.Domain/keycontrol.Domain.csproj",
+      "msbuildProject": "../keycontrol.Domain/keycontrol.Domain.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net9.0": []
+    "net9.0": [
+      "keycontrol.Domain >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\erick\\.nuget\\packages\\": {}
@@ -31,7 +50,11 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\erick\\Documents\\programacao\\KeyControlManagement\\keycontrol\\src\\keycontrol.Domain\\keycontrol.Domain.csproj": {
+              "projectPath": "C:\\Users\\erick\\Documents\\programacao\\KeyControlManagement\\keycontrol\\src\\keycontrol.Domain\\keycontrol.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

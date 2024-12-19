@@ -33,6 +33,42 @@
             "related": ".pdb;.xml"
           }
         }
+      },
+      "keycontrol.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "keycontrol.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/keycontrol.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/keycontrol.Application.dll": {}
+        }
+      },
+      "keycontrol.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/keycontrol.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/keycontrol.Domain.dll": {}
+        }
+      },
+      "keycontrol.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "keycontrol.Application": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/keycontrol.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/keycontrol.Infrastructure.dll": {}
+        }
       }
     }
   },
@@ -67,11 +103,28 @@
         "microsoft.openapi.1.6.17.nupkg.sha512",
         "microsoft.openapi.nuspec"
       ]
+    },
+    "keycontrol.Application/1.0.0": {
+      "type": "project",
+      "path": "../keycontrol.Application/keycontrol.Application.csproj",
+      "msbuildProject": "../keycontrol.Application/keycontrol.Application.csproj"
+    },
+    "keycontrol.Domain/1.0.0": {
+      "type": "project",
+      "path": "../keycontrol.Domain/keycontrol.Domain.csproj",
+      "msbuildProject": "../keycontrol.Domain/keycontrol.Domain.csproj"
+    },
+    "keycontrol.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../keycontrol.Infrastructure/keycontrol.Infrastructure.csproj",
+      "msbuildProject": "../keycontrol.Infrastructure/keycontrol.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
-      "Microsoft.AspNetCore.OpenApi >= 9.0.0"
+      "Microsoft.AspNetCore.OpenApi >= 9.0.0",
+      "keycontrol.Application >= 1.0.0",
+      "keycontrol.Infrastructure >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -98,7 +151,14 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\erick\\Documents\\programacao\\KeyControlManagement\\keycontrol\\src\\keycontrol.Application\\keycontrol.Application.csproj": {
+              "projectPath": "C:\\Users\\erick\\Documents\\programacao\\KeyControlManagement\\keycontrol\\src\\keycontrol.Application\\keycontrol.Application.csproj"
+            },
+            "C:\\Users\\erick\\Documents\\programacao\\KeyControlManagement\\keycontrol\\src\\keycontrol.Infrastructure\\keycontrol.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\erick\\Documents\\programacao\\KeyControlManagement\\keycontrol\\src\\keycontrol.Infrastructure\\keycontrol.Infrastructure.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

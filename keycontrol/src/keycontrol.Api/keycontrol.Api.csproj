@@ -10,4 +10,9 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\keycontrol.Application\keycontrol.Application.csproj" />
+    <ProjectReference Include="..\keycontrol.Infrastructure\keycontrol.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
