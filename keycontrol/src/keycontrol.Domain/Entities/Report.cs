@@ -1,3 +1,5 @@
+using keycontrol.Domain.Enums;
+
 namespace keycontrol.Domain.Entities;
 
 public class Report : Entity
