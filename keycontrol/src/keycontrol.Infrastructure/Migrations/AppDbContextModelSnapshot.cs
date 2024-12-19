@@ -173,10 +173,6 @@ namespace keycontrol.Infrastructure.Migrations
                     b.Property<Guid>("ExternalId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Iv")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
