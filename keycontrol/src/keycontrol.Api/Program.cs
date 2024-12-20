@@ -1,4 +1,7 @@
+using keycontrol.Api.Error;
+using keycontrol.Application;
 using keycontrol.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
+builder.Services.AddSingleton<ProblemDetailsFactory, KeyControlProblemDetailsFactory>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
