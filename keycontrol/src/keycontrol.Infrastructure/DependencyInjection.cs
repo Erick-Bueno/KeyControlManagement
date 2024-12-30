@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
         services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("default")));
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITokenRepository, TokenRepository>();
         services.AddScoped<IBcrypt, Bcrypt>();
         services.AddSingleton<ITokenJwtGenerator, TokenJwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
