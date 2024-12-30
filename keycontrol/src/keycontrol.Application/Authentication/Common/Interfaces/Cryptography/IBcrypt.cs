@@ -3,5 +3,5 @@
 public interface IBcrypt
 {
     public string EncryptPassword(string password);
-    public bool DecryptPassword(string password, string encryptPassword);
+    public bool VerifyPassword(string password, string encryptPassword);
 }

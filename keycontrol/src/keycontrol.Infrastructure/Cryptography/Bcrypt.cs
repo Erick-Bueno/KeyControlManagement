@@ -9,7 +9,7 @@ public class Bcrypt : IBcrypt
         return BCrypt.Net.BCrypt.HashPassword(password);
     }
 
-    public bool DecryptPassword(string password, string encryptPassword)
+    public bool VerifyPassword(string password, string encryptPassword)
     {
         return BCrypt.Net.BCrypt.Verify(password, encryptPassword);
     }
