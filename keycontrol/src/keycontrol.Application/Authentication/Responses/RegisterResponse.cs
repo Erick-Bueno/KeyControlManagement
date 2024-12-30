@@ -1,3 +1,3 @@
 ﻿namespace keycontrol.Application.Authentication.Responses;
 
-public record RegisterResponse(string ExternalId, string Name, string Email);
+public record RegisterResponse(Guid ExternalId, string Name, string Email);
