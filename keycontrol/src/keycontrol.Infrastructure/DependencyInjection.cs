@@ -5,6 +5,7 @@ using keycontrol.Application.Repositories;
 using keycontrol.Infrastructure.Authentication;
 using keycontrol.Infrastructure.Context;
 using keycontrol.Infrastructure.Cryptography;
+using keycontrol.Infrastructure.Repositories;
 using keycontrol.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +19,8 @@ public static class DependencyInjection
     {
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
         services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("default")));
-        services.AddScoped<IUserRepository, IUserRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITokenRepository, TokenRepository>();
         services.AddScoped<IBcrypt, Bcrypt>();
         services.AddSingleton<ITokenJwtGenerator, TokenJwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
