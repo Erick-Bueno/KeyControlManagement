@@ -13,14 +13,14 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, OneOf<LoginResponse
 {
     private readonly IUserRepository _userRepository;
     private readonly IBcrypt _bcrypt;
-    private readonly ITokenJwtGenerator tokenJwtGenerator;
+    private readonly ITokenJwtGenerator _tokenJwtGenerator;
     private readonly ITokenRepository _tokenRepository;
 
     public LoginQueryHandler(IUserRepository userRepository, IBcrypt bcrypt, ITokenJwtGenerator tokenJwtGenerator, ITokenRepository tokenRepository)
     {
         _userRepository = userRepository;
         _bcrypt = bcrypt;
-        this.tokenJwtGenerator = tokenJwtGenerator;
+        _tokenJwtGenerator = tokenJwtGenerator;
         _tokenRepository = tokenRepository;
     }
 
@@ -37,8 +37,8 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, OneOf<LoginResponse
         {
             return new InvalidPassword("Invalid password");
         }
-        var accessToken = tokenJwtGenerator.GenerateAccessToken(user.ExternalId);
-        var refreshToken = tokenJwtGenerator.GenerateRefreshToken();
+        var accessToken = _tokenJwtGenerator.GenerateAccessToken(user.ExternalId);
+        var refreshToken = _tokenJwtGenerator.GenerateRefreshToken();
 
         var findedToken = await _tokenRepository.FindTokenByEmail(user.Email);
 
