@@ -62,7 +62,7 @@ public class RegisterCommandHandlerTests
         var result = await _registerCommandHandler.Handle(request, CancellationToken.None);
         
         result.AsT0.Email.Should().Be(expectedResponseSuccess.Email);
-        result.AsT0.Id.Should().Be(expectedResponseSuccess.Id);
-        result.AsT0.UserName.Should().Be(expectedResponseSuccess.UserName);
+        result.AsT0.ExternalId.Should().Be(expectedResponseSuccess.ExternalId);
+        result.AsT0.Name.Should().Be(expectedResponseSuccess.Name);
     }
 }
