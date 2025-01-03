@@ -72,9 +72,9 @@ public class LoginQueryHandlerTests
         //arrumar esse teste
         var loginQuery = new LoginQuery(_faker.Person.Email, _faker.Random.AlphaNumeric(8));
         var user = new User(_faker.Person.FirstName, loginQuery.Email, loginQuery.Password);
-        var token = new Token(user.Email, _faker.Random.AlphaNumeric(18));
         var accessToken = _faker.Random.AlphaNumeric(8);
         var refreshToken = _faker.Random.AlphaNumeric(8);
+        var token = new Token(user.Email, refreshToken);
         _userRepositoryMock.Setup(ur => ur.FindUserByEmail(loginQuery.Email)).ReturnsAsync(user);
         _bcrypt.Setup(b => b.VerifyPassword(loginQuery.Password, user.Password)).Returns(true);
         _tokenRepository.Setup(t => t.FindTokenByEmail(user.Email)).ReturnsAsync(token);
@@ -86,7 +86,6 @@ public class LoginQueryHandlerTests
         var expectedResponseSuccess= new LoginResponse(user.ExternalId, user.Name, user.Email, accessToken, refreshToken);
         
         _tokenRepository.Verify(t => t.UpdateToken(token, token.RefreshToken), Times.Once);
-        
         result.AsT0.Email.Should().Be(expectedResponseSuccess.Email);
         result.AsT0.Name.Should().Be(expectedResponseSuccess.Name);
         result.AsT0.ExternalId.Should().Be(expectedResponseSuccess.ExternalId);
