@@ -69,7 +69,6 @@ public class LoginQueryHandlerTests
     [Trait("Category", "LoginQueryHandler")]
     public async Task Handle_GivenTokenIsNotNull_ThenUpdateTokenAndLoginAsync()
     {
-        //arrumar esse teste
         var loginQuery = new LoginQuery(_faker.Person.Email, _faker.Random.AlphaNumeric(8));
         var user = new User(_faker.Person.FirstName, loginQuery.Email, loginQuery.Password);
         var accessToken = _faker.Random.AlphaNumeric(8);
@@ -91,5 +90,32 @@ public class LoginQueryHandlerTests
         result.AsT0.ExternalId.Should().Be(expectedResponseSuccess.ExternalId);
         result.AsT0.AccessToken.Should().Be(expectedResponseSuccess.AccessToken);
         result.AsT0.RefreshToken.Should().Be(expectedResponseSuccess.RefreshToken);
-    }   
+    }
+
+    [Fact]
+    [Trait("Category", "LoginQueryHandler")]
+    public async Task Handle_GivenTokenIsNull_ThenCreateTokenAndLoginAsync()
+    {
+        var loginQuery = new LoginQuery(_faker.Person.Email, _faker.Random.AlphaNumeric(8));
+        var user = new User(_faker.Person.FirstName, loginQuery.Email, loginQuery.Password);
+        var accessToken = _faker.Random.AlphaNumeric(8);
+        var refreshToken = _faker.Random.AlphaNumeric(8);
+        var token = new Token(user.Email, refreshToken);
+        _userRepositoryMock.Setup(ur => ur.FindUserByEmail(loginQuery.Email)).ReturnsAsync(user);
+        _bcrypt.Setup(b => b.VerifyPassword(loginQuery.Password, user.Password)).Returns(true);
+        _tokenRepository.Setup(t => t.FindTokenByEmail(user.Email)).ReturnsAsync((Token)null);
+        _tokenJwtGenerator.Setup(t => t.GenerateAccessToken(user.ExternalId)).Returns(accessToken);
+        _tokenJwtGenerator.Setup(t => t.GenerateRefreshToken()).Returns(refreshToken);
+        
+        var result = await _loginQueryHandler.Handle(loginQuery, CancellationToken.None);
+        
+        var expectedResponseSuccess= new LoginResponse(user.ExternalId, user.Name, user.Email, accessToken, refreshToken);
+        
+        _tokenRepository.Verify(t => t.AddToken(It.IsAny<Token>()), Times.Once);
+        result.AsT0.Email.Should().Be(expectedResponseSuccess.Email);
+        result.AsT0.Name.Should().Be(expectedResponseSuccess.Name);
+        result.AsT0.ExternalId.Should().Be(expectedResponseSuccess.ExternalId);
+        result.AsT0.AccessToken.Should().Be(expectedResponseSuccess.AccessToken);
+        result.AsT0.RefreshToken.Should().Be(expectedResponseSuccess.RefreshToken);
+    }
 }
