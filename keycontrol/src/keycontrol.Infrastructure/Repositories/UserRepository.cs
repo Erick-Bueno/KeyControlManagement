@@ -19,8 +19,10 @@ public class UserRepository : IUserRepository
         return await _appDbContext.users.Where(u => u.Email == email).FirstOrDefaultAsync();
     }
 
-    public Task<User> AddUser(User user)
+    public async Task<User> AddUser(User user)
     {
-        throw new NotImplementedException();
+        await _appDbContext.users.AddAsync(user);
+        await _appDbContext.SaveChangesAsync();
+        return user;
     }
 }
