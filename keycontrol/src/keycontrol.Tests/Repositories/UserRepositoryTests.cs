@@ -40,4 +40,21 @@ public class UserRepositoryTests
 
        result.Should().BeNull();
     }
+    [Fact]
+    [Trait("Category", "UserRepository")]
+    public async Task FindUserByEmail_GivenRegisteredEmail_ThenReturnUserAsync()
+    {
+       var registeredEmail = _faker.Person.Email;
+       var user = new User(_faker.Person.UserName, registeredEmail, _faker.Random.AlphaNumeric(8));
+       _dbContext.users.Add(user);
+       await _dbContext.SaveChangesAsync();
+
+       var result = await _userRepository.FindUserByEmail(registeredEmail);
+
+       result.Email.Should().Be(user.Email);
+       result.ExternalId.Should().Be(user.ExternalId);
+       result.Id.Should().Be(user.Id);
+       result.Name.Should().Be(user.Name);
+       result.Password.Should().Be(user.Password);
+    }
 }
