@@ -12,7 +12,7 @@ namespace keycontrol.Tests.Repositories;
 public class UserRepositoryTests
 {
     private readonly AppDbContext _dbContext;
-    private readonly UserRepository _userRepository;
+    private readonly IUserRepository _userRepository;
     private readonly Faker _faker = new Faker("pt_BR");
     public UserRepositoryTests()
     {
@@ -59,13 +59,13 @@ public class UserRepositoryTests
     }
     [Fact]
     [Trait("Category", "UserRepository")]
-    public async Task AddUser_GivenUser_ThenAddUser ()
+    public async Task AddUser_GivenUser_ThenAddUserAsync ()
     {
         var user = new User(_faker.Person.UserName, _faker.Person.Email, _faker.Random.AlphaNumeric(8));
-        var userFinded = await _dbContext.users.FindAsync(user.Id);
 
         var result = await _userRepository.AddUser(user);
 
+        var userFinded = await _dbContext.users.FindAsync(user.Id);
         result.Should().Be(userFinded);
     }
 }
