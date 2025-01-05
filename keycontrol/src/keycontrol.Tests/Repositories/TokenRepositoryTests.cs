@@ -42,4 +42,20 @@ public class TokenRepositoryTests
 
        result.Should().BeNull();
     }
+    [Fact]
+    [Trait("Category", "TokenRepository")]
+    public async Task FindTokenByEmail_GivenRegisteredEmail_ThenReturnTokenAsync()
+    {
+       var registeredEmail = _faker.Person.Email;
+       var token = new Token(registeredEmail, _faker.Random.AlphaNumeric(8));
+       _dbContext.tokens.Add(token);
+       await _dbContext.SaveChangesAsync();
+
+       var result = await _tokenRepository.FindTokenByEmail(registeredEmail);
+
+       result.Email.Should().Be(token.Email);
+       result.ExternalId.Should().Be(token.ExternalId);
+       result.Id.Should().Be(token.Id);
+       result.RefreshToken.Should().Be(token.RefreshToken);
+    }
 }
