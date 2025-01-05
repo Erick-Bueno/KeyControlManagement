@@ -73,4 +73,19 @@ public class TokenRepositoryTests
         tokenFinded.Id.Should().Be(token.Id);
         tokenFinded.RefreshToken.Should().Be(token.RefreshToken);
     }
+    [Fact]
+    [Trait("Category", "TokenRepository")]
+    public async Task UpdateToken_GivenTokenAndRefreshToken_ThenUpdateTokenAsync()
+    {
+        var token = new Token(_faker.Person.Email, _faker.Random.AlphaNumeric(8));
+        var newRefreshToken = _faker.Random.AlphaNumeric(8);
+        _dbContext.tokens.Add(token);
+        await _dbContext.SaveChangesAsync();
+
+        await _tokenRepository.UpdateToken(token, newRefreshToken);
+
+        var tokenFinded = await _dbContext.tokens.FindAsync(token.Id);
+
+        tokenFinded.RefreshToken.Should().Be(newRefreshToken);
+    }
 }
