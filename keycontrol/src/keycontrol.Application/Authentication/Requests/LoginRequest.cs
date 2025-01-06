@@ -1,3 +1,3 @@
 namespace keycontrol.Application.Authentication.Requests;
 
-public record LoginRequest(string Name, string Password);
+public record LoginRequest(string Email, string Password);
