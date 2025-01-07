@@ -29,6 +29,8 @@ app.UseSerilogRequestLogging();
 
 app.UseAuthorization();
 
+app.UseExceptionHandler("/error");
+
 app.MapControllers();
 
 app.Run();
