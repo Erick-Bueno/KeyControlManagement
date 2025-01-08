@@ -22,7 +22,7 @@ jobs:
         dotnet-version: 9.0.x
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: ./keycontrol/src
+      working-directory: keycontrol/src/keycontrol.Api
     - name: Build
       run: dotnet build --no-restore
       working-directory: ./keycontrol/src
