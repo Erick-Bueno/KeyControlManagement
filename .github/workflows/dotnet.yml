@@ -25,7 +25,7 @@ jobs:
       working-directory: ./keycontrol/src/keycontrol.Api
     - name: Build
       run: dotnet build --no-restore
-      working-directory: ./keycontrol/src
+      working-directory: ./keycontrol/src/keycontrol.Api
     - name: Test
       run: dotnet test --no-build --verbosity normal
-      working-directory: ./keycontrol/src
+      working-directory: ./keycontrol/src/keycontrol.Tests
