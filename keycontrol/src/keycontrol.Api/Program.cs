@@ -1,4 +1,3 @@
-using keycontrol.Api.Error;
 using keycontrol.Application;
 using keycontrol.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -13,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
-builder.Services.AddSingleton<ProblemDetailsFactory, KeyControlProblemDetailsFactory>();
+
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 var app = builder.Build();
 
