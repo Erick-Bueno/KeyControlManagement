@@ -12,6 +12,17 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddCors(options => {
+    options.AddPolicy(
+       name: "KeyControlAllowSpecificOrigins",
+       policy => {
+        policy.WithOrigins("https://localhost/4200");
+        policy.AllowAnyHeader();
+        policy.AllowCredentials();
+       }
+    );
+});
+
 
 builder.Services.AddApiVersioning(options => {
     options.DefaultApiVersion = new ApiVersion(1);
@@ -29,6 +40,8 @@ builder.Services.AddApiVersioning(options => {
 
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 var app = builder.Build();
+
+app.UseCors("KeyControlAllowSpecificOrigins");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
