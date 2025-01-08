@@ -26,6 +26,7 @@ builder.Services.AddCors(options => {
 
 builder.Services.AddApiVersioning(options => {
     options.DefaultApiVersion = new ApiVersion(1);
+    options.AssumeDefaultVersionWhenUnspecified = true;
     options.ReportApiVersions = true;
     options.ApiVersionReader = ApiVersionReader.Combine(
         new UrlSegmentApiVersionReader(),
