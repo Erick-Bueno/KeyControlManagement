@@ -16,7 +16,7 @@ builder.Services.AddCors(options => {
     options.AddPolicy(
        name: "KeyControlAllowSpecificOrigins",
        policy => {
-        policy.WithOrigins("https://localhost/4200");
+        policy.WithOrigins("http://localhost:4200");
         policy.AllowAnyHeader();
         policy.AllowCredentials();
        }
