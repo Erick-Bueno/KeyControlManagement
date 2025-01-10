@@ -1,7 +1,6 @@
-using keycontrol.Api.Error;
+using Asp.Versioning;
 using keycontrol.Application;
 using keycontrol.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,9 +12,35 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
-builder.Services.AddSingleton<ProblemDetailsFactory, KeyControlProblemDetailsFactory>();
+builder.Services.AddCors(options => {
+    options.AddPolicy(
+       name: "KeyControlAllowSpecificOrigins",
+       policy => {
+        policy.WithOrigins("http://localhost:4200");
+        policy.AllowAnyHeader();
+        policy.AllowCredentials();
+       }
+    );
+});
+builder.Services.AddApiVersioning(options => {
+    options.DefaultApiVersion = new ApiVersion(1);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new UrlSegmentApiVersionReader(),
+        new HeaderApiVersionReader("X-ApiVersion")
+    );
+})
+.AddMvc()
+.AddApiExplorer(options => {
+    options.GroupNameFormat = "'v'V";
+    options.SubstituteApiVersionInUrl = true;
+});
+
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 var app = builder.Build();
+
+app.UseCors("KeyControlAllowSpecificOrigins");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -29,6 +54,8 @@ app.UseSerilogRequestLogging();
 
 app.UseAuthorization();
 
+app.UseExceptionHandler("/error");
+
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

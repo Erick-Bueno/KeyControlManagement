@@ -4,6 +4,7 @@ using keycontrol.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OneOf;
+using OneOf.Types;
 
 namespace keycontrol.Application.Extension;
 
@@ -25,6 +26,24 @@ public static class ControllerBaseResponses
                     return ValidationProblem(controller, error);
                 }
 
+                return controller.Problem();
+            }
+        );
+    }
+    public static IActionResult LoginResponseBase(this ControllerBase controller, OneOf<LoginResponse, AppError> response)
+    {
+        return response.Match(
+            result => controller.Ok(result),
+            error =>
+            {
+                if (error.ErrorType == TypeError.Conflict.ToString())
+                {
+                    return controller.Problem(statusCode: StatusCodes.Status409Conflict, title: error.Detail);
+                }
+                if (error.ErrorType == TypeError.ValidationError.ToString())
+                {
+                    return ValidationProblem(controller, error);
+                }
                 return controller.Problem();
             }
         );

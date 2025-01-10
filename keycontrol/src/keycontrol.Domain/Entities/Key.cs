@@ -1,8 +1,10 @@
+using System.Collections.ObjectModel;
+
 namespace keycontrol.Domain.Entities;
 
 public class Key : Entity
 {   
-    public int IdRoom { get; private set; }
-    public Room Room { get; private set; }
-    public List<Report> Reports { get; private set; }
+    public int IdRoom { get; }
+    public Room? Room { get; }
+    public Collection<Report>? Reports { get; }
 }

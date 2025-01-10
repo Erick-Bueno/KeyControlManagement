@@ -10,7 +10,7 @@ using keycontrol.Domain.Entities;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Moq;
 using Xunit;
-
+namespace keycontrol.Tests.Authentication.Queries.Login;
 public class LoginQueryHandlerTests
 {
     private readonly Mock<IUserRepository> _userRepositoryMock;
@@ -100,7 +100,6 @@ public class LoginQueryHandlerTests
         var user = new User(_faker.Person.FirstName, loginQuery.Email, loginQuery.Password);
         var accessToken = _faker.Random.AlphaNumeric(8);
         var refreshToken = _faker.Random.AlphaNumeric(8);
-        var token = new Token(user.Email, refreshToken);
         _userRepositoryMock.Setup(ur => ur.FindUserByEmail(loginQuery.Email)).ReturnsAsync(user);
         _bcrypt.Setup(b => b.VerifyPassword(loginQuery.Password, user.Password)).Returns(true);
         _tokenRepository.Setup(t => t.FindTokenByEmail(user.Email)).ReturnsAsync((Token)null);

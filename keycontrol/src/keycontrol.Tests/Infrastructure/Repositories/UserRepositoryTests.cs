@@ -12,7 +12,7 @@ namespace keycontrol.Tests.Repositories;
 public class UserRepositoryTests
 {
     private readonly AppDbContext _dbContext;
-    private readonly IUserRepository _userRepository;
+    private readonly UserRepository _userRepository;
     private readonly Faker _faker = new Faker("pt_BR");
     public UserRepositoryTests()
     {

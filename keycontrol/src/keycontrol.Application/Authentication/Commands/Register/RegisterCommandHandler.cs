@@ -29,7 +29,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, OneOf<Reg
         }
         var encryptPassword = _bcrypt.EncryptPassword(request.Password);
         
-        var newUser = new User(request.Username, encryptPassword, request.Email);
+        var newUser = new User(request.Username, request.Email, encryptPassword);
 
         var user = await  _userRepository.AddUser(newUser);
 
