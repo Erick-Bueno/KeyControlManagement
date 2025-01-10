@@ -229,3 +229,18 @@ dotnet_naming_style.begins_with_i.required_prefix = I
 dotnet_naming_style.begins_with_i.required_suffix = 
 dotnet_naming_style.begins_with_i.word_separator = 
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
+
+
+dotnet_diagnostic.CA1062.severity = none
+dotnet_diagnostic.CA1724.severity = none
+dotnet_diagnostic.Cs8981.severity = none
+dotnet_diagnostic.Cs8603.severity = none
+dotnet_diagnostic.Cs8600.severity = none
+dotnet_diagnostic.Cs8602.severity = none
+dotnet_diagnostic.Cs8620.severity = none
+dotnet_diagnostic.Cs8604.severity = none
+dotnet_diagnostic.CA2234.severity = none
+dotnet_diagnostic.CA1515.severity = none
+dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.CA1001.severity = none
+dotnet_diagnostic.S6931.severity = none
