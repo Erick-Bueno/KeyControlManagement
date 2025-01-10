@@ -27,5 +27,6 @@
         <PackageVersion Include="Moq" Version="4.20.72" />
         <PackageVersion Include="xunit" Version="2.9.2" />
         <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.0"/>
+        <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.4.0.108396"/>
     </ItemGroup>
 </Project>

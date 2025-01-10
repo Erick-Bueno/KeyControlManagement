@@ -4,6 +4,7 @@
     <PackageReference Include="Serilog.AspNetCore"/>
     <PackageReference Include="Asp.Versioning.Mvc"/>
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer"/>
+    <PackageReference Include="SonarAnalyzer.CSharp"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\keycontrol.Application\keycontrol.Application.csproj"/>
