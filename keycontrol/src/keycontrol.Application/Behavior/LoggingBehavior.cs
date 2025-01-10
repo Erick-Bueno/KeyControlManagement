@@ -13,7 +13,7 @@ where TResponse : OneOfBase<Success, AppError>
 {
     private readonly ILogger _logger;
      private static readonly Action<ILogger, string, string ,Exception> CompletedRequest = LoggerMessage.Define<string, string>(LogLevel.Error,  new EventId(13, nameof(CompletedRequest)), "Completed request {RequestName} with {Error}");
-    private static readonly Action<ILogger, string ,Exception> ProcessRequest = LoggerMessage.Define<string>(LogLevel.Information,  new EventId(13, nameof(ProcessRequest)), "Processing request {RequestName}");
+    private static readonly Action<ILogger, string ,Exception> ProcessRequest = LoggerMessage.Define<string>(LogLevel.Information,  new EventId(14, nameof(ProcessRequest)), "Processing request {RequestName}");
     public LoggingBehavior(ILogger logger)
     {
         _logger = logger;
