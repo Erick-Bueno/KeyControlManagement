@@ -1,0 +1,6 @@
+﻿services:
+  keycontrol.api:
+    image: keycontrol.api
+    build:
+      context: .
+      dockerfile: src/keycontrol.Api/Dockerfile

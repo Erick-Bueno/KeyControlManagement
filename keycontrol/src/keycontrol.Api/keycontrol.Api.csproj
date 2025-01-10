@@ -1,4 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
     <PackageReference Include="Serilog.AspNetCore"/>
@@ -8,5 +11,10 @@
   <ItemGroup>
     <ProjectReference Include="..\keycontrol.Application\keycontrol.Application.csproj"/>
     <ProjectReference Include="..\keycontrol.Infrastructure\keycontrol.Infrastructure.csproj"/>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
   </ItemGroup>
 </Project>
