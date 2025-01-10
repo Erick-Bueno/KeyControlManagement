@@ -24,7 +24,7 @@ where TResponse : OneOfBase<Success, AppError>
         var requestName = typeof(TRequest).Name;
 
         ProcessRequest(_logger, requestName, default!);
-        var result = await next().ConfigureAwait(false);
+        var result = await next();
         if(result.IsT0){
             ProcessRequest(_logger, requestName, default!);
         }

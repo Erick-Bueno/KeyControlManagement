@@ -16,19 +16,19 @@ namespace keycontrol.Infrastructure.Repositories
 
         public async Task<Token> FindTokenByEmail(string email)
         {
-            return await _context.tokens.Where(t => t.Email == email).FirstOrDefaultAsync().ConfigureAwait(false);
+            return await _context.tokens.Where(t => t.Email == email).FirstOrDefaultAsync();
         }
 
         public async Task AddToken(Token token)
         {
-            await _context.tokens.AddAsync(token).ConfigureAwait(false);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.tokens.AddAsync(token);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateToken(Token token, string newRefreshToken)
         {
             Token.UpdateToken(token, newRefreshToken);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.SaveChangesAsync();
         }
     }
 }

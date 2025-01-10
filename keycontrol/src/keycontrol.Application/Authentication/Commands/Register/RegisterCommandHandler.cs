@@ -21,7 +21,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, OneOf<Reg
 
     public async Task<OneOf<RegisterResponse, AppError>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var userFinded = await _userRepository.FindUserByEmail(request.Email).ConfigureAwait(false);
+        var userFinded = await _userRepository.FindUserByEmail(request.Email);
 
         if (userFinded is not null)
         {
@@ -31,7 +31,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, OneOf<Reg
         
         var newUser = new User(request.Username, encryptPassword, request.Email);
 
-        var user = await  _userRepository.AddUser(newUser).ConfigureAwait(false);
+        var user = await  _userRepository.AddUser(newUser);
 
         return new RegisterResponse(user.ExternalId, user.Name, user.Email);
     }

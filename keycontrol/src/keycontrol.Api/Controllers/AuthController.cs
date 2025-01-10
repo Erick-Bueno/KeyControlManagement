@@ -18,14 +18,14 @@ public class AuthController : ApiController
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
         var loginQuery = new LoginQuery(loginRequest.Email, loginRequest.Password);
-        var result = await _sender.Send(loginQuery).ConfigureAwait(false);
+        var result = await _sender.Send(loginQuery);
         return this.LoginResponseBase(result);
     }
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
     {
         var registerCommand = new RegisterCommand(registerRequest.Name,registerRequest.Email, registerRequest.Password);
-        var result = await _sender.Send(registerCommand).ConfigureAwait(false);
+        var result = await _sender.Send(registerCommand);
         return this.RegisterResponseBase(result);
     }
 }
