@@ -12,7 +12,8 @@ where TRequest : IRequest<TResponse>
 where TResponse : OneOfBase<Success, AppError>
 {
     private readonly ILogger _logger;
-
+     private static readonly Action<ILogger, string, string ,Exception> CompletedRequest = LoggerMessage.Define<string, string>(LogLevel.Error,  new EventId(13, nameof(CompletedRequest)), "Completed request {RequestName} with {Error}");
+    private static readonly Action<ILogger, string ,Exception> ProcessRequest = LoggerMessage.Define<string>(LogLevel.Information,  new EventId(13, nameof(ProcessRequest)), "Processing request {RequestName}");
     public LoggingBehavior(ILogger logger)
     {
         _logger = logger;
@@ -22,14 +23,17 @@ where TResponse : OneOfBase<Success, AppError>
     {
         var requestName = typeof(TRequest).Name;
 
-        _logger.LogInformation("Processing request {requestName}", requestName);
-        var result = await next();
+        ProcessRequest(_logger, requestName, default!);
+        var result = await next().ConfigureAwait(false);
         if(result.IsT0){
-            _logger.LogInformation("Completed request {requestName}", requestName);
+            ProcessRequest(_logger, requestName, default!);
         }
         else{
-            _logger.LogError("Completed request {requestName} with {error}", requestName, result.AsT1.Detail);
+            CompletedRequest(_logger, requestName,  result.AsT1.Detail, default!);
         }
         return result;
     }
 }
+
+
+

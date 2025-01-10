@@ -22,8 +22,6 @@ builder.Services.AddCors(options => {
        }
     );
 });
-
-
 builder.Services.AddApiVersioning(options => {
     options.DefaultApiVersion = new ApiVersion(1);
     options.AssumeDefaultVersionWhenUnspecified = true;
@@ -60,4 +58,4 @@ app.UseExceptionHandler("/error");
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync().ConfigureAwait(false);

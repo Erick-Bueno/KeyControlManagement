@@ -26,7 +26,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, OneOf<LoginResponse
 
     public async Task<OneOf<LoginResponse, AppError>> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.FindUserByEmail(request.Email);
+        var user = await _userRepository.FindUserByEmail(request.Email).ConfigureAwait(false);
         if (user is null)
         {
             return new UserNotRegistered("User not registered");
@@ -40,16 +40,16 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, OneOf<LoginResponse
         var accessToken = _tokenJwtGenerator.GenerateAccessToken(user.ExternalId);
         var refreshToken = _tokenJwtGenerator.GenerateRefreshToken();
 
-        var findedToken = await _tokenRepository.FindTokenByEmail(user.Email);
+        var findedToken = await _tokenRepository.FindTokenByEmail(user.Email).ConfigureAwait(false);
 
         if (findedToken is not null)
         {
-            await _tokenRepository.UpdateToken(findedToken, refreshToken);
+            await _tokenRepository.UpdateToken(findedToken, refreshToken).ConfigureAwait(false);
         }
         else
         {
             var newToken = new Token(user.Email, refreshToken);
-            await _tokenRepository.AddToken(newToken);
+            await _tokenRepository.AddToken(newToken).ConfigureAwait(false);
         }
         return new LoginResponse(user.ExternalId, user.Name, user.Email, accessToken, refreshToken);
     }

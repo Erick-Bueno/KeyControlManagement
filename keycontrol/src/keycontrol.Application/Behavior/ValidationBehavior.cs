@@ -20,10 +20,10 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
     public async Task<TResponse> Handle(TRequest request,
         RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        var validationResult = await _validator.ValidateAsync(request);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken).ConfigureAwait(false);
         if (validationResult.IsValid)
-        {
-            return await next();
+        {   
+            return await next().ConfigureAwait(false);
         }
 
         var errors = validationResult.Errors.ConvertAll(validationFailure => new ValidationError()

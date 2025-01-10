@@ -1,14 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\keycontrol.Domain\keycontrol.Domain.csproj" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="FluentValidation"/>
-    <PackageReference Include="FluentValidation.AspNetCore"/>
-    <PackageReference Include="MediatR"/>
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="FluentValidation.AspNetCore" />
+    <PackageReference Include="MediatR" />
     <PackageReference Include="OneOf" />
   </ItemGroup>
-
 </Project>

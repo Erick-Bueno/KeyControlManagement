@@ -16,13 +16,13 @@ public class UserRepository : IUserRepository
 
     public async Task<User> FindUserByEmail(string email)
     {
-        return await _appDbContext.users.Where(u => u.Email == email).FirstOrDefaultAsync();
+        return await _appDbContext.users.Where(u => u.Email == email).FirstOrDefaultAsync().ConfigureAwait(false);
     }
 
     public async Task<User> AddUser(User user)
     {
-        await _appDbContext.users.AddAsync(user);
-        await _appDbContext.SaveChangesAsync();
+        await _appDbContext.users.AddAsync(user).ConfigureAwait(false);
+        await _appDbContext.SaveChangesAsync().ConfigureAwait(false);
         return user;
     }
 }
