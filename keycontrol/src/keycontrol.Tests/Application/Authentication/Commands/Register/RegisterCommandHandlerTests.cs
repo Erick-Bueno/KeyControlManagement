@@ -27,7 +27,7 @@ public class RegisterCommandHandlerTests
 
     [Fact]
     [Trait("Category", "RegisterCommandHandler")]
-    public async void Handle_GivenUserAlreadyExists_ThenReturnUserAlreadyRegisteredError()
+    public async Task Handle_GivenUserAlreadyExists_ThenReturnUserAlreadyRegisteredError()
     {
         var userAlreadyRegistered =
             new User(_faker.Person.FirstName, _faker.Person.Email, _faker.Random.AlphaNumeric(8));
@@ -47,7 +47,7 @@ public class RegisterCommandHandlerTests
 
     [Fact]
     [Trait("Category", "RegisterCommandHandler")]
-    public async void Handle_GivenUserDoesNotExist_ThenRegisterUser()
+    public async Task Handle_GivenUserDoesNotExist_ThenRegisterUser()
     {
         var userNotRegistered =
             new User(_faker.Person.FirstName, _faker.Person.Email, _faker.Random.AlphaNumeric(8));

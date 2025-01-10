@@ -12,7 +12,7 @@ namespace keycontrol.Tests.Repositories;
 public class TokenRepositoryTests
 {
     private readonly AppDbContext _dbContext;
-    private readonly ITokenRepository _tokenRepository;
+    private readonly TokenRepository _tokenRepository;
     private readonly Faker _faker = new Faker("pt_BR");
 
     public TokenRepositoryTests()
