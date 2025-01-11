@@ -9,12 +9,12 @@ namespace keycontrol.Application.Behavior;
 
 public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
 where TRequest : IRequest<TResponse>
-where TResponse : OneOfBase<Success, AppError>
+where TResponse : IOneOf
 {
-    private readonly ILogger _logger;
+    private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger;
      private static readonly Action<ILogger, string, string ,Exception> CompletedRequest = LoggerMessage.Define<string, string>(LogLevel.Error,  new EventId(13, nameof(CompletedRequest)), "Completed request {RequestName} with {Error}");
     private static readonly Action<ILogger, string ,Exception> ProcessRequest = LoggerMessage.Define<string>(LogLevel.Information,  new EventId(14, nameof(ProcessRequest)), "Processing request {RequestName}");
-    public LoggingBehavior(ILogger logger)
+    public LoggingBehavior(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     {
         _logger = logger;
     }
@@ -25,11 +25,11 @@ where TResponse : OneOfBase<Success, AppError>
 
         ProcessRequest(_logger, requestName, default!);
         var result = await next();
-        if(result.IsT0){
+        if(result is TResponse){
             ProcessRequest(_logger, requestName, default!);
         }
-        else{
-            CompletedRequest(_logger, requestName,  result.AsT1.Detail, default!);
+        else if(result is AppError appError){
+            CompletedRequest(_logger, requestName,  appError.Detail, default!);
         }
         return result;
     }
