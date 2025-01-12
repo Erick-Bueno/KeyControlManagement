@@ -25,10 +25,10 @@ where TResponse : IOneOf
 
         ProcessRequest(_logger, requestName, default!);
         var result = await next();
-        if(result is TResponse){
+        if(result.Value is GlobalResponse){
             ProcessRequest(_logger, requestName, default!);
         }
-        else if(result is AppError appError){
+        else if(result.Value is AppError appError){
             CompletedRequest(_logger, requestName,  appError.Detail, default!);
         }
         return result;
