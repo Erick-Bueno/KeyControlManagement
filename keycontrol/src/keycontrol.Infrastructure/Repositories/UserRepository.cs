@@ -16,7 +16,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User> FindUserByEmail(string email)
     {
-        return await _appDbContext.users.Where(u => u.Email == email).FirstOrDefaultAsync();
+        return await _appDbContext.users.Where(u => u.Email.Equals(email)).FirstOrDefaultAsync();
     }
 
     public async Task<User> AddUser(User user)
