@@ -9,7 +9,7 @@ public class Report : Entity
     public Status Status { get; }
     public DateTime WithdrawalDate { get; }
     public DateTime? ReturnDate { get; }
-    public required Key Key { get; set; }
+    public required KeyRoom Key { get; set; }
     public required User User { get; set; }
     public Report()
     {

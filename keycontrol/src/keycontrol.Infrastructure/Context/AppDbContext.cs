@@ -9,7 +9,7 @@ public class AppDbContext : DbContext
     {
     }
     public DbSet<User> users { get; set; }
-    public DbSet<Key> keys { get; set; }
+    public DbSet<KeyRoom> keys { get; set; }
     public DbSet<Report> reports { get; set; }
     public DbSet<Token> tokens { get; set; }
     public DbSet<Room> rooms { get; set; }
