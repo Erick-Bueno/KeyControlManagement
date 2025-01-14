@@ -21,9 +21,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, OneOf<Reg
 
     public async Task<OneOf<RegisterResponse, AppError>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var userFinded = await _userRepository.FindUserByEmail(request.Email);
+        var isUserRegistered = await _userRepository.FindUserByEmail(request.Email);
 
-        if (userFinded is not null)
+        if (isUserRegistered is not null)
         {
             return new UserAlreadyRegistered("User already registered");
         }
