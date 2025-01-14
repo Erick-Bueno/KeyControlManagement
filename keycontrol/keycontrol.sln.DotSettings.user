@@ -2,7 +2,8 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ACancellationToken_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003F_002E_002E_003F_002E_002E_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E2_003Fresharper_002Dhost_003FSourcesCache_003F2565b9d99fdde488bc7801b84387b2cc864959cfb63212e1ff576fc9c6bb7e_003FCancellationToken_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6b0ec252_002Dcbde_002D411a_002Da5bb_002Dace202a28cf0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Handle_GivenTokenIsNotNull_ThenUpdateTokenAsync" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::989523E5-900D-4EF7-BB19-FCE52C2AC1B6::net9.0::LoginQueryHandlerTests.Handle_GivenTokenIsNotNull_ThenUpdateTokenAndLoginAsync&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::989523E5-900D-4EF7-BB19-FCE52C2AC1B6::net9.0::LoginQueryHandlerTests.Handle_GivenTokenIsNull_ThenCreateTokenAndLoginAsync&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::989523E5-900D-4EF7-BB19-FCE52C2AC1B6::net9.0::keycontrol.Tests.Authentication.Commands.Register.RegisterCommandHandlerTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::989523E5-900D-4EF7-BB19-FCE52C2AC1B6::net9.0::keycontrol.Tests.Authentication.Queries.Login.LoginQueryHandlerTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::989523E5-900D-4EF7-BB19-FCE52C2AC1B6::net9.0::keycontrol.Tests.Repositories.TokenRepositoryTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

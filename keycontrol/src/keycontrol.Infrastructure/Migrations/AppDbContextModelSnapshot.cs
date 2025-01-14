@@ -36,10 +36,7 @@ namespace keycontrol.Infrastructure.Migrations
                     b.Property<Guid>("ExternalId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("IdRoom")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RoomId")
+                    b.Property<int?>("RoomId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -66,19 +63,7 @@ namespace keycontrol.Infrastructure.Migrations
                     b.Property<Guid>("ExternalId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("IdKey")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("IdUser")
-                        .HasColumnType("integer");
-
                     b.Property<int>("KeyId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("ReturnDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -86,9 +71,6 @@ namespace keycontrol.Infrastructure.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime>("WithdrawalDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -112,10 +94,6 @@ namespace keycontrol.Infrastructure.Migrations
 
                     b.Property<Guid>("ExternalId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -191,13 +169,9 @@ namespace keycontrol.Infrastructure.Migrations
 
             modelBuilder.Entity("keycontrol.Domain.Entities.Key", b =>
                 {
-                    b.HasOne("keycontrol.Domain.Entities.Room", "Room")
+                    b.HasOne("keycontrol.Domain.Entities.Room", null)
                         .WithMany("Keys")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Room");
+                        .HasForeignKey("RoomId");
                 });
 
             modelBuilder.Entity("keycontrol.Domain.Entities.Report", b =>
