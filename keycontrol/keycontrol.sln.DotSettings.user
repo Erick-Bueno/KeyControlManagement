@@ -5,5 +5,7 @@
     &lt;TestId&gt;xUnit::989523E5-900D-4EF7-BB19-FCE52C2AC1B6::net9.0::keycontrol.Tests.Authentication.Commands.Register.RegisterCommandHandlerTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::989523E5-900D-4EF7-BB19-FCE52C2AC1B6::net9.0::keycontrol.Tests.Authentication.Queries.Login.LoginQueryHandlerTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::989523E5-900D-4EF7-BB19-FCE52C2AC1B6::net9.0::keycontrol.Tests.Repositories.TokenRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::989523E5-900D-4EF7-BB19-FCE52C2AC1B6::net9.0::keycontrol.Tests.Application.Key.KeyCommandHandlerTests.Handle_GivenRoomDoesNotExist_ThenReturnRoomNotFindedError&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::989523E5-900D-4EF7-BB19-FCE52C2AC1B6::net9.0::keycontrol.Tests.Application.Key.KeyCommandHandlerTests.Handle_GivenRoomDoesExist_ThenAddNewKeyRoom&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
