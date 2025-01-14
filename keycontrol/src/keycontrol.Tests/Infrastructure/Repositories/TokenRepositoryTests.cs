@@ -1,6 +1,5 @@
 using Bogus;
 using FluentAssertions;
-using keycontrol.Application.Repositories;
 using keycontrol.Domain.Entities;
 using keycontrol.Infrastructure.Context;
 using keycontrol.Infrastructure.Repositories;
