@@ -1,5 +1,6 @@
 ﻿using keycontrol.Application.Authentication.Responses;
 using keycontrol.Application.Errors;
+using keycontrol.Application.Key.Responses;
 using keycontrol.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -21,6 +22,7 @@ public static class ControllerBaseResponses
                 {
                     return controller.Problem(statusCode: StatusCodes.Status409Conflict, title: error.Detail);
                 }
+
                 if (error.ErrorType == TypeError.ValidationError.ToString())
                 {
                     return ValidationProblem(controller, error);
@@ -30,7 +32,9 @@ public static class ControllerBaseResponses
             }
         );
     }
-    public static IActionResult LoginResponseBase(this ControllerBase controller, OneOf<LoginResponse, AppError> response)
+
+    public static IActionResult LoginResponseBase(this ControllerBase controller,
+        OneOf<LoginResponse, AppError> response)
     {
         return response.Match(
             result => controller.Ok(result),
@@ -40,14 +44,39 @@ public static class ControllerBaseResponses
                 {
                     return controller.Problem(statusCode: StatusCodes.Status409Conflict, title: error.Detail);
                 }
+
                 if (error.ErrorType == TypeError.ValidationError.ToString())
                 {
                     return ValidationProblem(controller, error);
                 }
+
                 return controller.Problem();
             }
         );
     }
+
+    public static IActionResult RegisterKeyResponseBase(this ControllerBase controller,
+        OneOf<RegisterKeyResponse, AppError> response)
+    {
+        return response.Match(
+            result => controller.Created("Keys/Guid", result),
+            error =>
+            {
+                if (error.ErrorType == TypeError.Conflict.ToString())
+                {
+                    return controller.Problem(statusCode: StatusCodes.Status409Conflict, title: error.Detail);
+                }
+
+                if (error.ErrorType == TypeError.ValidationError.ToString())
+                {
+                    return ValidationProblem(controller, error);
+                }
+
+                return controller.Problem();
+            }
+        );
+    }
+
     private static ActionResult ValidationProblem(ControllerBase controller, AppError error)
     {
         var modelStateDictionary = new ModelStateDictionary();
