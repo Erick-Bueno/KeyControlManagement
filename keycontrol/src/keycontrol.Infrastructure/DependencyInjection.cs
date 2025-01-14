@@ -21,6 +21,8 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("default")));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITokenRepository, TokenRepository>();
+        services.AddScoped<IKeyRepository, KeyRepository>();
+        services.AddScoped<IRoomRepository, RoomRepository>();
         services.AddScoped<IBcrypt, Bcrypt>();
         services.AddSingleton<ITokenJwtGenerator, TokenJwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
