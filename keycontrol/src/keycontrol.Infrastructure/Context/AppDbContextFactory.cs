@@ -19,6 +19,6 @@ public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
         var connectionString = configuration.GetConnectionString("Default");
         var options = new DbContextOptionsBuilder<AppDbContext>();
         options.UseNpgsql(connectionString, p => p.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName));
-        return new AppDbContext(options.Options, configuration);
+        return new AppDbContext(options.Options);
     }
 }
