@@ -6,8 +6,10 @@ namespace keycontrol.Infrastructure.Context;
 
 public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
+    public static bool IsMigrationContext { get; private set; }
     public AppDbContext CreateDbContext(string[] args)
     {
+        IsMigrationContext = true;
         var basePath = Path.Combine(Directory.GetCurrentDirectory(), "..", "keycontrol.Api");
         var configuration = new ConfigurationBuilder()
             .SetBasePath(basePath)

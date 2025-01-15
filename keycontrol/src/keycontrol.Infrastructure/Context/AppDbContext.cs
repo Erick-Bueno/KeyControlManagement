@@ -35,10 +35,10 @@ public class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new RoleConfiguration());
         modelBuilder.ApplyConfiguration(new RolePermissionConfiguration());
     }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var permissionsEnum = Enum.GetValues<Domain.Enums.Permission>()
+        if (!AppDbContextFactory.IsMigrationContext){
+            var permissionsEnum = Enum.GetValues<Domain.Enums.Permission>()
             .Where(p => p != Domain.Enums.Permission.None)
             .Select(p => new Permission { Id = (int)p, Name = p.ToString() });
         var rolePermissions = new[]
@@ -48,20 +48,6 @@ public class AppDbContext : DbContext
         };
 
         optionsBuilder.UseNpgsql(_configuration.GetConnectionString("Default"))
-            .UseSeeding((context, _) => {
-                context.Set<Permission>()
-                    .ExecuteDelete();
-                context.Set<Role>()
-                    .ExecuteDelete();
-                context.Set<RolePermission>()
-                    .ExecuteDelete();
-
-                context.Set<Permission>().AddRange(permissionsEnum);
-                context.Set<Role>().AddRange(Role.GetValues());
-                context.Set<RolePermission>().AddRange(rolePermissions);
-                
-                context.SaveChanges();
-            })
             .UseAsyncSeeding(async (context, _, cancellationToken) =>
             {
                 await context.Set<Permission>()
@@ -77,6 +63,7 @@ public class AppDbContext : DbContext
                 
                 await context.SaveChangesAsync(cancellationToken);
             });
+        }
         
     }
 }
