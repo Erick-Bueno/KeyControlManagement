@@ -15,7 +15,7 @@ public class KeyController : ApiController
     {
         _sender = sender;
     }
-    [HasPermission(new Permission[] { Permission.Administrator , Permission.ReadMember})]  
+    [HasPermission(Permission.Administrator)]  
     [HttpPost]
     public async Task<IActionResult> AddKey([FromBody] RegisterKeyRequest registerKeyRequest)
     {
