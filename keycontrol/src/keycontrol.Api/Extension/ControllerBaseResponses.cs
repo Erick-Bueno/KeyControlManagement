@@ -22,7 +22,10 @@ public static class ControllerBaseResponses
                 {
                     return controller.Problem(statusCode: StatusCodes.Status409Conflict, title: error.Detail);
                 }
-
+                if (error.ErrorType == TypeError.BadRequest.ToString())
+                {
+                    return controller.Problem(statusCode: StatusCodes.Status400BadRequest, title: error.Detail);
+                }
                 if (error.ErrorType == TypeError.ValidationError.ToString())
                 {
                     return ValidationProblem(controller, error);
@@ -44,7 +47,10 @@ public static class ControllerBaseResponses
                 {
                     return controller.Problem(statusCode: StatusCodes.Status409Conflict, title: error.Detail);
                 }
-
+                if (error.ErrorType == TypeError.BadRequest.ToString())
+                {
+                    return controller.Problem(statusCode: StatusCodes.Status400BadRequest, title: error.Detail);
+                }
                 if (error.ErrorType == TypeError.ValidationError.ToString())
                 {
                     return ValidationProblem(controller, error);
