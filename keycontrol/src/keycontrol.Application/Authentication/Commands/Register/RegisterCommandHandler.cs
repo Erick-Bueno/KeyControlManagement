@@ -24,17 +24,18 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, OneOf<Reg
     public async Task<OneOf<RegisterResponse, AppError>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         var emailResult = Email.Create(request.Email);
+        //testar
         if(emailResult.IsFailure){
             return new InvalidEmail(emailResult.ErrorMessage);
         }
-        var isUserRegistered = await _userRepository.FindUserByEmail(request.Email);
+        var isUserRegistered = await _userRepository.FindUserByEmail(emailResult.Value);
 
         if (isUserRegistered is not null)
         {
             return new UserAlreadyRegistered("User already registered");
         }
         var passwordResult = Password.Create(request.Password);
-
+    //testar
         if(passwordResult.IsFailure){
             return new InvalidPassword(passwordResult.ErrorMessage);
         }
@@ -42,7 +43,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, OneOf<Reg
         var encryptPassword = _bcrypt.EncryptPassword(passwordResult.Value.PasswordValue);
         
         var newUser = User.Create(request.Username, emailResult.Value, encryptPassword);
-
+        //testar
         if(newUser.IsFailure){
             return new FailCreateUser(newUser.ErrorMessage);
         }
