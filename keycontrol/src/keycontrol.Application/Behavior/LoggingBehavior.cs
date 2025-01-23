@@ -12,8 +12,8 @@ where TRequest : IRequest<TResponse>
 where TResponse : IOneOf
 {
     private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger;
-     private static readonly Action<ILogger, string, string ,Exception> CompletedRequest = LoggerMessage.Define<string, string>(LogLevel.Error,  new EventId(13, nameof(CompletedRequest)), "Completed request {RequestName} with {Error}");
-    private static readonly Action<ILogger, string ,Exception> ProcessRequest = LoggerMessage.Define<string>(LogLevel.Information,  new EventId(14, nameof(ProcessRequest)), "Processing request {RequestName}");
+    private static readonly Action<ILogger, string, string, Exception> CompletedRequest = LoggerMessage.Define<string, string>(LogLevel.Error, new EventId(13, nameof(CompletedRequest)), "Completed request {RequestName} with {Error}");
+    private static readonly Action<ILogger, string, Exception> ProcessRequest = LoggerMessage.Define<string>(LogLevel.Information, new EventId(14, nameof(ProcessRequest)), "Processing request {RequestName}");
     public LoggingBehavior(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     {
         _logger = logger;
@@ -25,11 +25,13 @@ where TResponse : IOneOf
 
         ProcessRequest(_logger, requestName, default!);
         var result = await next();
-        if(result.Value is GlobalResponse){
+        if (result.Value is GlobalResponse)
+        {
             ProcessRequest(_logger, requestName, default!);
         }
-        else if(result.Value is AppError appError){
-            CompletedRequest(_logger, requestName,  appError.Detail, default!);
+        else if (result.Value is AppError appError)
+        {
+            CompletedRequest(_logger, requestName, appError.Detail, default!);
         }
         return result;
     }
