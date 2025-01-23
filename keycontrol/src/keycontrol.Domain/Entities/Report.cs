@@ -12,7 +12,7 @@ public class Report : Entity
     public DateTime? ReturnDate { get; private set;}
     public  KeyRoom Key { get;}
     public  User User { get;}
-    public Report()
+    private Report()
     {
         Status = Status.Available;
     }
