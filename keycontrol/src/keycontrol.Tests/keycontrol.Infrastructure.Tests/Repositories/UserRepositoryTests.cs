@@ -1,71 +1,64 @@
 using Bogus;
 using FluentAssertions;
-using keycontrol.Application.Repositories;
 using keycontrol.Domain.Entities;
-using keycontrol.Infrastructure.Context;
+using keycontrol.Domain.ValueObjects;
 using keycontrol.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
+using keycontrol.Tests.Helpers;
 using Xunit;
 
 namespace keycontrol.Tests.Repositories;
-
-public class UserRepositoryTests
+[Trait("Category", "UserRepository")]
+public class UserRepositoryTests : DatabaseUnitTest
 {
-    private readonly AppDbContext _dbContext;
     private readonly UserRepository _userRepository;
     private readonly Faker _faker = new Faker("pt_BR");
     public UserRepositoryTests()
     {
-        var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-        .UseSqlite("Filename=UserRepositoryTests.db")
-        .Options;   
-
-        _dbContext = new AppDbContext(dbContextOptions);
-
-        _dbContext.Database.OpenConnection();
-        _dbContext.Database.EnsureCreated();
-
         _userRepository = new UserRepository(_dbContext);
     }
     [Fact]
-    [Trait("Category", "UserRepository")]
     public async Task FindUserByEmail_GivenNotRegisteredEmail_ThenReturnNullAsync()
     {
-       var user = new User(_faker.Person.UserName, _faker.Person.Email, _faker.Random.AlphaNumeric(8));
-       var unregisteredEmail = _faker.Person.Email + "unregistered";
-       _dbContext.users.Add(user);
-       await _dbContext.SaveChangesAsync();
+        var email = _faker.Person.Email;
+        var emailValueObject = Email.Create(email);
+        var user = User.Create(_faker.Person.UserName, emailValueObject.Value, _faker.Random.AlphaNumeric(8));
+        var unregisteredEmail = _faker.Person.Email + "unregistered";
+        var unregisteredEmailValueObject =  Email.Create(unregisteredEmail);
+        _dbContext.users.Add(user.Value);
+        await _dbContext.SaveChangesAsync();
 
-       var result = await _userRepository.FindUserByEmail(unregisteredEmail);
+        var result = await _userRepository.FindUserByEmail(unregisteredEmailValueObject.Value);
 
-       result.Should().BeNull();
+        result.Should().BeNull();
     }
     [Fact]
-    [Trait("Category", "UserRepository")]
     public async Task FindUserByEmail_GivenRegisteredEmail_ThenReturnUserAsync()
     {
-       var registeredEmail = _faker.Person.Email;
-       var user = new User(_faker.Person.UserName, registeredEmail, _faker.Random.AlphaNumeric(8));
-       _dbContext.users.Add(user);
-       await _dbContext.SaveChangesAsync();
+        var registeredEmail = _faker.Person.Email;
+         var emailValueObject = Email.Create(registeredEmail);
+        var user = User.Create(_faker.Person.UserName, emailValueObject.Value, _faker.Random.AlphaNumeric(8));
+        _dbContext.users.Add(user.Value);
+        await _dbContext.SaveChangesAsync();
 
-       var result = await _userRepository.FindUserByEmail(registeredEmail);
+        var result = await _userRepository.FindUserByEmail(emailValueObject.Value);
 
-       result.Email.Should().Be(user.Email);
-       result.ExternalId.Should().Be(user.ExternalId);
-       result.Id.Should().Be(user.Id);
-       result.Name.Should().Be(user.Name);
-       result.Password.Should().Be(user.Password);
+        result.Email.Should().Be(user.Value.Email);
+        result.ExternalId.Should().Be(user.Value.ExternalId);
+        result.Id.Should().Be(user.Value.Id);
+        result.Name.Should().Be(user.Value.Name);
+        result.Password.Should().Be(user.Value.Password);
     }
     [Fact]
-    [Trait("Category", "UserRepository")]
-    public async Task AddUser_GivenUser_ThenAddUserAsync ()
+    public async Task AddUser_GivenUser_ThenAddUserAsync()
     {
-        var user = new User(_faker.Person.UserName, _faker.Person.Email, _faker.Random.AlphaNumeric(8));
+        var email = _faker.Person.Email;
+        var emailValueObject = Email.Create(email);
 
-        var result = await _userRepository.AddUser(user);
+        var user = User.Create(_faker.Person.UserName, emailValueObject.Value, _faker.Random.AlphaNumeric(8));
 
-        var userFinded = await _dbContext.users.FindAsync(user.Id);
+        var result = await _userRepository.AddUser(user.Value);
+
+        var userFinded = await _dbContext.users.FindAsync(user.Value.Id);
         result.Should().Be(userFinded);
     }
 }

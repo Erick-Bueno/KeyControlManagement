@@ -1,56 +1,48 @@
 using Bogus;
 using FluentAssertions;
 using keycontrol.Domain.Entities;
-using keycontrol.Infrastructure.Context;
+using keycontrol.Domain.ValueObjects;
 using keycontrol.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
+using keycontrol.Tests.Helpers;
 using Xunit;
 
 namespace keycontrol.Tests.Repositories;
-
-public class TokenRepositoryTests
+[Trait("Category", "TokenRepository")]
+public class TokenRepositoryTests : DatabaseUnitTest
 {
-    private readonly AppDbContext _dbContext;
     private readonly TokenRepository _tokenRepository;
     private readonly Faker _faker = new Faker("pt_BR");
 
     public TokenRepositoryTests()
     {
-        var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-        .UseSqlite("Filename=TokenRepositoryTests.db")
-        .Options;
-
-        _dbContext = new AppDbContext(dbContextOptions);
-
-        _dbContext.Database.OpenConnection();
-        _dbContext.Database.EnsureCreated();
 
         _tokenRepository = new TokenRepository(_dbContext);
     }
-
     [Fact]
-    [Trait("Category", "TokenRepository")]
     public async Task FindTokenByEmail__GivenNotRegisteredEmail_ThenReturnNullAsync()
     {
-        var token = new Token(_faker.Person.Email, _faker.Random.AlphaNumeric(8));
+        var email = _faker.Person.Email;
+        var emailValueObject = Email.Create(email);
+        var token = Token.Create(emailValueObject.Value, _faker.Random.AlphaNumeric(8));
         var unregisteredEmail = _faker.Person.Email + "unregistered";
+        var unregisteredEmailValueObject = Email.Create(unregisteredEmail);
         _dbContext.tokens.Add(token);
         await _dbContext.SaveChangesAsync();
 
-        var result = await _tokenRepository.FindTokenByEmail(unregisteredEmail);
+        var result = await _tokenRepository.FindTokenByEmail(unregisteredEmailValueObject.Value);
 
         result.Should().BeNull();
     }
     [Fact]
-    [Trait("Category", "TokenRepository")]
     public async Task FindTokenByEmail_GivenRegisteredEmail_ThenReturnTokenAsync()
     {
         var registeredEmail = _faker.Person.Email;
-        var token = new Token(registeredEmail, _faker.Random.AlphaNumeric(8));
+        var emailValueObject = Email.Create(registeredEmail);
+        var token = Token.Create(emailValueObject.Value, _faker.Random.AlphaNumeric(8));
         _dbContext.tokens.Add(token);
         await _dbContext.SaveChangesAsync();
 
-        var result = await _tokenRepository.FindTokenByEmail(registeredEmail);
+        var result = await _tokenRepository.FindTokenByEmail(emailValueObject.Value);
 
         result.Email.Should().Be(token.Email);
         result.ExternalId.Should().Be(token.ExternalId);
@@ -58,10 +50,12 @@ public class TokenRepositoryTests
         result.RefreshToken.Should().Be(token.RefreshToken);
     }
     [Fact]
-    [Trait("Category", "TokenRepository")]
     public async Task AddToken_GivenToken_ThenAddTokenAsync()
     {
-        var token = new Token(_faker.Person.Email, _faker.Random.AlphaNumeric(8));
+        var email = _faker.Person.Email;
+        var emailValueObject = Email.Create(email);
+
+        var token = Token.Create(emailValueObject.Value, _faker.Random.AlphaNumeric(8));
 
         await _tokenRepository.AddToken(token);
 
@@ -73,10 +67,12 @@ public class TokenRepositoryTests
         tokenFinded.RefreshToken.Should().Be(token.RefreshToken);
     }
     [Fact]
-    [Trait("Category", "TokenRepository")]
     public async Task UpdateToken_GivenTokenAndRefreshToken_ThenUpdateTokenAsync()
     {
-        var token = new Token(_faker.Person.Email, _faker.Random.AlphaNumeric(8));
+        var email = _faker.Person.Email;
+        var emailValueObject = Email.Create(email);
+
+        var token = Token.Create(emailValueObject.Value, _faker.Random.AlphaNumeric(8));
         var newRefreshToken = _faker.Random.AlphaNumeric(8);
         _dbContext.tokens.Add(token);
         await _dbContext.SaveChangesAsync();

@@ -42,13 +42,13 @@ public class RegisterKeyCommandHandlerTests
     public async Task Handle_GivenRoomDoesExist_ThenAddNewKeyRoom()
     {
         var registerKeyCommand = new RegisterKeyCommand(_faker.Random.Guid(), _faker.Lorem.Text());
-        var room = new Room(_faker.Lorem.Text());
-        var key = new KeyRoom(room.Id,registerKeyCommand.Description);
-        _roomRepositoryMock.Setup(r => r.GetRoomByExternalId(registerKeyCommand.ExternalIdRoom)).ReturnsAsync(room);
-        _keyRepositoryMock.Setup(k => k.AddKey(key));
+        var room = Room.Create(_faker.Lorem.Text());
+        var key = KeyRoom.Create(room.Value.Id,registerKeyCommand.Description);
+        _roomRepositoryMock.Setup(r => r.GetRoomByExternalId(registerKeyCommand.ExternalIdRoom)).ReturnsAsync(room.Value);
+        _keyRepositoryMock.Setup(k => k.AddKey(key.Value));
         
         var result = await _registerKeyCommandHandler.Handle(registerKeyCommand, CancellationToken.None);
-        var expectedResponse = new RegisterKeyResponse(key.ExternalId, room.ExternalId, key.Description, room.Name);
+        var expectedResponse = new RegisterKeyResponse(key.Value.ExternalId, room.Value.ExternalId, key.Value.Description, room.Value.Name);
         
         result.AsT0.Description.Should().Be(expectedResponse.Description);
         result.AsT0.Room.Should().Be(expectedResponse.Room);
