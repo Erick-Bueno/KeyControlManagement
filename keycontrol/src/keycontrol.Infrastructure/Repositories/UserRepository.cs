@@ -1,5 +1,6 @@
 ﻿using keycontrol.Application.Repositories;
 using keycontrol.Domain.Entities;
+using keycontrol.Domain.ValueObjects;
 using keycontrol.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,9 +15,9 @@ public class UserRepository : IUserRepository
         _appDbContext = appDbContext;
     }
 
-    public async Task<User> FindUserByEmail(string email)
+    public async Task<User> FindUserByEmail(Email email)
     {
-        return await _appDbContext.users.Where(u => u.Email.Equals(email)).FirstOrDefaultAsync();
+        return await _appDbContext.users.Where(u => u.Email == email).FirstOrDefaultAsync();
     }
 
     public async Task<User> AddUser(User user)

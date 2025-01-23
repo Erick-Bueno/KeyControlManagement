@@ -1,5 +1,6 @@
 using keycontrol.Application.Repositories;
 using keycontrol.Domain.Entities;
+using keycontrol.Domain.ValueObjects;
 using keycontrol.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,7 @@ namespace keycontrol.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Token> FindTokenByEmail(string email)
+        public async Task<Token> FindTokenByEmail(Email email)
         {
             return await _context.tokens.Where(t => t.Email == email).FirstOrDefaultAsync();
         }
@@ -27,7 +28,7 @@ namespace keycontrol.Infrastructure.Repositories
 
         public async Task UpdateToken(Token token, string newRefreshToken)
         {
-            Token.UpdateToken(token, newRefreshToken);
+            Token.Update(token, newRefreshToken);
             await _context.SaveChangesAsync();
         }
     }
