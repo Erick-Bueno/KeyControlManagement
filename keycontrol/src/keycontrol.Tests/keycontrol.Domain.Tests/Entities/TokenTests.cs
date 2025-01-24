@@ -5,7 +5,7 @@ using keycontrol.Domain.ValueObjects;
 using Xunit;
 
 namespace keycontrol.Tests.Keycontrol.Domain.Tests.Entities;
-
+[Trait("Category", "Entities")]
 public class TokenTests
 {
     private readonly Faker _faker = new Faker("pt_BR");
