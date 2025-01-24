@@ -18,7 +18,7 @@ public record Password
             return Result<Password>.Failure("Inform an password");
         }
         if(!IsValidPassword(passwordValue)){
-            return Result<Password>.Failure("Invalid password ");
+            return Result<Password>.Failure("Invalid password");
         }
         return Result<Password>.Success(new Password(passwordValue));
     }
