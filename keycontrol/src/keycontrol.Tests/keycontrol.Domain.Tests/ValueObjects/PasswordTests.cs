@@ -5,7 +5,7 @@ using keycontrol.Tests.Fakers;
 using Xunit;
 
 namespace keycontrol.Tests.Keycontrol.Domain.Tests.ValueObjects;
-
+[Trait("Category", "ValueObjects")]
 public class PasswordTests
 {
     private readonly Faker _faker = new Faker("pt_BR");
@@ -23,12 +23,12 @@ public class PasswordTests
     [Fact]
     public void Create_GivenPasswordNullOrWhiteSpace_ThenShouldReturnError()
     {
-        var emptyPassword = "";
+        var emptyPassword = " ";
 
         var result = Password.Create(emptyPassword);
 
         result.IsFailure.Should().BeTrue();
-        result.ErrorMessage.Should().Be("inform an password");
+        result.ErrorMessage.Should().Be("Inform an password");
     }
     [Fact]
     public void Create_GivenInvalidPassword_ThenShouldReturnError()

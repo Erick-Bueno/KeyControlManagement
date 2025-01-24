@@ -5,7 +5,7 @@ using keycontrol.Domain.ValueObjects;
 using Xunit;
 
 namespace keycontrol.Tests.Keycontrol.Domain.Tests.Entities;
-
+[Trait("Category", "Entities")]
 public class UserTests
 {
     private readonly Faker _faker = new Faker("pt_BR");
@@ -24,7 +24,7 @@ public class UserTests
     [Fact]
     public void Create_GivenUserNameNullOrWhiteSpace_ThenShouldReturnError()
     {
-        var emptyName = "";
+        var emptyName = " ";
         var email = Email.Create(_faker.Person.Email).Value;
         var password = _faker.Random.AlphaNumeric(8);
 

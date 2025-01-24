@@ -4,7 +4,7 @@ using keycontrol.Domain.ValueObjects;
 using Xunit;
 
 namespace keycontrol.Tests.Keycontrol.Domain.Tests.ValueObjects;
-
+[Trait("Category", "ValueObjects")]
 public class EmailTests
 {
     private readonly Faker _faker = new Faker("pt_BR");
@@ -22,7 +22,7 @@ public class EmailTests
     [Fact]
     public void Create_GivenEmailNullOrWhiteSpace_ThenShouldReturnError()
     {
-       var emptyEmail = "";
+       var emptyEmail = " ";
 
         var result = Email.Create(emptyEmail);
 
