@@ -47,7 +47,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, OneOf<LoginResponse
         }
 
         var passwordIsValid = _bcrypt.VerifyPassword(request.Password, user.Password);
-
+        //testar
         if (!passwordIsValid)
         {
             return new InvalidPassword("Invalid password");
