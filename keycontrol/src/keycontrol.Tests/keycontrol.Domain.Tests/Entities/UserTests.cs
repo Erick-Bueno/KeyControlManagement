@@ -34,7 +34,7 @@ public class UserTests
         result.ErrorMessage.Should().Be("Inform an name");
     }
     [Fact]
-    public void Create_GivenUserValidData_ThenShouldReturnUser()
+    public void Create_GivenUserValidData_ThenShouldCreateUser()
     {
         var name = _faker.Person.FullName;
         var email = Email.Create(_faker.Person.Email).Value;
