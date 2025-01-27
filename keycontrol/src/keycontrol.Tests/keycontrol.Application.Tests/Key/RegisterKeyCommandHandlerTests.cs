@@ -25,12 +25,12 @@ public class RegisterKeyCommandHandlerTests
 
     [Fact]
     [Trait("Category", "KeyCommandHandler")]
-    public async Task Handle_GivenRoomDoesNotExist_ThenReturnRoomNotFindedError()
+    public async Task Handle_GivenRoomDoesNotExist_ThenReturnRoomNotFindedErrorAsync()
     {
         var externalIdRoomNotRegistered = _faker.Random.Guid();
-        var registerKeyCommand = new RegisterKeyCommand(externalIdRoomNotRegistered, _faker.Lorem.Text()); 
-        _roomRepositoryMock.Setup(r => r.GetRoomByExternalId(externalIdRoomNotRegistered)).ReturnsAsync((Room)null);        
-        
+        var registerKeyCommand = new RegisterKeyCommand(externalIdRoomNotRegistered, _faker.Lorem.Text());
+        _roomRepositoryMock.Setup(r => r.GetRoomByExternalId(externalIdRoomNotRegistered)).ReturnsAsync((Room)null);
+
         var result = await _registerKeyCommandHandler.Handle(registerKeyCommand, CancellationToken.None);
         var expectedResponseError = new RoomNotFinded("Room not found");
         result.AsT1.NameError.Should().Be(expectedResponseError.NameError);
@@ -39,19 +39,31 @@ public class RegisterKeyCommandHandlerTests
     }
     [Fact]
     [Trait("Category", "KeyCommandHandler")]
-    public async Task Handle_GivenRoomDoesExist_ThenAddNewKeyRoom()
+    public async Task Handle_GivenRoomDoesExist_ThenAddNewKeyRoomAsync()
     {
         var registerKeyCommand = new RegisterKeyCommand(_faker.Random.Guid(), _faker.Lorem.Text());
         var room = Room.Create(_faker.Lorem.Text());
-        var key = KeyRoom.Create(room.Value.Id,registerKeyCommand.Description);
+        var key = KeyRoom.Create(room.Value.Id, registerKeyCommand.Description);
         _roomRepositoryMock.Setup(r => r.GetRoomByExternalId(registerKeyCommand.ExternalIdRoom)).ReturnsAsync(room.Value);
         _keyRepositoryMock.Setup(k => k.AddKey(key.Value));
-        
+
         var result = await _registerKeyCommandHandler.Handle(registerKeyCommand, CancellationToken.None);
         var expectedResponse = new RegisterKeyResponse(key.Value.ExternalId, room.Value.ExternalId, key.Value.Description, room.Value.Name);
-        
+
         result.AsT0.Description.Should().Be(expectedResponse.Description);
         result.AsT0.Room.Should().Be(expectedResponse.Room);
         result.AsT0.ExternalIdRoom.Should().Be(expectedResponse.ExternalIdRoom);
+    }
+    [Fact]
+    public async Task Handle_GivenInvalidDescription_ThenReturnErrorAsync()
+    {
+        var registerKeyCommand = new RegisterKeyCommand(_faker.Random.Guid(), " ");
+        var room = Room.Create(_faker.Lorem.Text());
+        _roomRepositoryMock.Setup(r => r.GetRoomByExternalId(registerKeyCommand.ExternalIdRoom)).ReturnsAsync(room.Value);
+
+        var result = await _registerKeyCommandHandler.Handle(registerKeyCommand, CancellationToken.None);
+
+        result.AsT1.NameError.Should().Be("FailCreateKeyRoom");
+        result.AsT1.ErrorType.Should().Be("BadRequest");
     }
 }
