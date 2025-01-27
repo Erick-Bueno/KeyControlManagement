@@ -12,6 +12,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasKey(u => u.Id);
         builder.HasIndex(u => u.ExternalId);
         builder.Property(u => u.Name).IsRequired().HasMaxLength(200);
+        builder.Property(u => u.blocked).IsRequired();
         builder.Property(u => u.Email).IsRequired()
         .HasMaxLength(200)
         .HasConversion(
