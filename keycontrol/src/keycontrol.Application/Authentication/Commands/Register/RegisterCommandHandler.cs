@@ -24,7 +24,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, OneOf<Reg
     public async Task<OneOf<RegisterResponse, AppError>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         var emailResult = Email.Create(request.Email);
-        //testar
+
         if(emailResult.IsFailure){
             return new InvalidEmail(emailResult.ErrorMessage);
         }
@@ -35,7 +35,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, OneOf<Reg
             return new UserAlreadyRegistered("User already registered");
         }
         var passwordResult = Password.Create(request.Password);
-    //testar
+        
         if(passwordResult.IsFailure){
             return new InvalidPassword(passwordResult.ErrorMessage);
         }

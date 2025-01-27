@@ -69,4 +69,48 @@ public class RegisterCommandHandlerTests
         result.AsT0.ExternalId.Should().Be(expectedResponseSuccess.ExternalId);
         result.AsT0.Name.Should().Be(expectedResponseSuccess.Name);
     }
+    [Fact]
+    public async Task Handle_GivenInvalidEmailToDomain_ReturnErrorInvalidEmailAsync()
+    {
+        var invalidEmail = _faker.Random.AlphaNumeric(8);
+        var registerCommand = new RegisterCommand(_faker.Person.UserName, invalidEmail, ValidPassword.Generate());
+        var result = await _registerCommandHandler.Handle(registerCommand, CancellationToken.None);
+
+        result.AsT1.NameError.Should().Be("InvalidEmail");
+        result.AsT1.ErrorType.Should().Be("BadRequest");
+    }
+    [Fact]
+    public async Task Handle_GivenInvalidPasswordToDomain_ReturnErrorInvalidPasswordAsync()
+    {
+        var email = _faker.Person.Email;
+        var emailValueObject = Email.Create(email);
+        var invalidPassword = _faker.Random.AlphaNumeric(8);
+        var registerCommand = new RegisterCommand(_faker.Person.UserName, email, invalidPassword);
+        _userRepositoryMock.Setup(ur => ur.FindUserByEmail(emailValueObject.Value)).ReturnsAsync((User)null);
+
+        var result = await _registerCommandHandler.Handle(registerCommand, CancellationToken.None);
+
+        result.AsT1.NameError.Should().Be("InvalidPassword");
+        result.AsT1.ErrorType.Should().Be("BadRequest");
+    }
+    [Fact]
+    public async Task Handle_GivenInvalidNameToDomain_ReturnErrorFailCreateUserAsync()
+    {
+        var email = _faker.Person.Email;
+        var emailValueObject = Email.Create(email);
+        var userNotRegistered =
+        User.Create(_faker.Person.FirstName, emailValueObject.Value, ValidPassword.Generate());
+        _userRepositoryMock.Setup(ur => ur.FindUserByEmail(userNotRegistered.Value.Email))
+            .ReturnsAsync((User)null);
+        _userRepositoryMock.Setup(ur => ur.AddUser(It.IsAny<User>())).ReturnsAsync(userNotRegistered.Value);
+        var request =
+            new RegisterCommand(" ", userNotRegistered.Value.Email.EmailValue,
+                userNotRegistered.Value.Password);
+
+        var result = await _registerCommandHandler.Handle(request, CancellationToken.None);
+
+        result.AsT1.NameError.Should().Be("FailCreateUser");
+        result.AsT1.ErrorType.Should().Be("BadRequest");
+       
+    }
 }
