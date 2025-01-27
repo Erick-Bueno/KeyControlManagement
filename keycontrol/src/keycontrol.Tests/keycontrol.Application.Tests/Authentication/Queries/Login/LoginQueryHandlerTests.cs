@@ -12,6 +12,7 @@ using keycontrol.Domain.ValueObjects;
 using keycontrol.Tests.Fakers;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using Moq;
+using System.Threading.Tasks;
 using Xunit;
 namespace keycontrol.Tests.Authentication.Queries.Login;
 [Trait("Category", "LoginQueryHandler")]
@@ -123,5 +124,30 @@ public class LoginQueryHandlerTests
         result.AsT0.ExternalId.Should().Be(expectedResponseSuccess.ExternalId);
         result.AsT0.AccessToken.Should().Be(expectedResponseSuccess.AccessToken);
         result.AsT0.RefreshToken.Should().Be(expectedResponseSuccess.RefreshToken);
+    }
+    [Fact]
+    public async Task Handle_GivenInvalidEmailToDomain_ReturnErrorInvalidEmailAsync()
+    {
+        var invalidEmail = _faker.Random.AlphaNumeric(8);
+        var loginQuery = new LoginQuery(invalidEmail, ValidPassword.Generate());
+        var result = await _loginQueryHandler.Handle(loginQuery, CancellationToken.None);
+
+        result.AsT1.NameError.Should().Be("InvalidEmail");
+        result.AsT1.ErrorType.Should().Be("BadRequest");
+    }
+    [Fact]
+    public async Task Handle_GivenInvalidPasswordToDomain_ReturnErrorInvalidPassword()
+    {
+        var email = _faker.Person.Email;
+        var emailValueObject = Email.Create(email);
+        var invalidPassword = _faker.Random.AlphaNumeric(8);
+        var loginQuery = new LoginQuery(email, invalidPassword);
+        var user = User.Create(_faker.Person.FirstName,  emailValueObject.Value, loginQuery.Password);
+        _userRepositoryMock.Setup(ur => ur.FindUserByEmail(emailValueObject.Value)).ReturnsAsync(user.Value);
+
+        var result = await _loginQueryHandler.Handle(loginQuery, CancellationToken.None);
+
+        result.AsT1.NameError.Should().Be("InvalidPassword");
+        result.AsT1.ErrorType.Should().Be("BadRequest");
     }
 }

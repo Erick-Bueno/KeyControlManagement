@@ -29,7 +29,6 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, OneOf<LoginResponse
     public async Task<OneOf<LoginResponse, AppError>> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         var emailResult = Email.Create(request.Email);
-        //testar
         if (emailResult.IsFailure)
         {
             return new InvalidEmail(emailResult.ErrorMessage);
@@ -40,14 +39,12 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, OneOf<LoginResponse
             return new UserNotRegistered("User not registered");
         }
         var passwordResult = Password.Create(request.Password);
-        //testar
         if (passwordResult.IsFailure)
         {
             return new InvalidPassword(passwordResult.ErrorMessage);
         }
 
         var passwordIsValid = _bcrypt.VerifyPassword(request.Password, user.Password);
-        //testar
         if (!passwordIsValid)
         {
             return new InvalidPassword("Invalid password");
