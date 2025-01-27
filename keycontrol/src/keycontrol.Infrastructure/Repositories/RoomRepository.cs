@@ -14,6 +14,13 @@ public class RoomRepository : IRoomRepository
         _context = context;
     }
 
+    public async Task<Room> AddRoom(Room room)
+    {
+        await _context.rooms.AddAsync(room);
+        await _context.SaveChangesAsync();
+        return room;
+    }
+
     public async Task<Room> GetRoomByExternalId(Guid externalId)
     {
         return await _context.rooms.Where(r => r.ExternalId.Equals(externalId)).FirstOrDefaultAsync();
