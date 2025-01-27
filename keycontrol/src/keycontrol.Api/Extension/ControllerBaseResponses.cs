@@ -1,6 +1,7 @@
 ﻿using keycontrol.Application.Authentication.Responses;
 using keycontrol.Application.Errors;
 using keycontrol.Application.Keys.Responses;
+using keycontrol.Application.Rooms.Responses;
 using keycontrol.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -72,7 +73,31 @@ public static class ControllerBaseResponses
                 {
                     return controller.Problem(statusCode: StatusCodes.Status409Conflict, title: error.Detail);
                 }
+                if (error.ErrorType == TypeError.BadRequest.ToString())
+                {
+                    return controller.Problem(statusCode: StatusCodes.Status400BadRequest, title: error.Detail);
+                }
 
+                if (error.ErrorType == TypeError.ValidationError.ToString())
+                {
+                    return ValidationProblem(controller, error);
+                }
+
+                return controller.Problem();
+            }
+        );
+    }
+    public static IActionResult RegisterRoomResponseBase(this ControllerBase controller,
+        OneOf<RegisterRoomResponse, AppError> response)
+    {
+        return response.Match(
+            result => controller.Created("Rooms/Guid", result),
+            error =>
+            {
+                if (error.ErrorType == TypeError.BadRequest.ToString())
+                {
+                    return controller.Problem(statusCode: StatusCodes.Status400BadRequest, title: error.Detail);
+                }
                 if (error.ErrorType == TypeError.ValidationError.ToString())
                 {
                     return ValidationProblem(controller, error);
