@@ -1,6 +1,6 @@
 ﻿using keycontrol.Application.Extension;
-using keycontrol.Application.Key.Commands;
-using keycontrol.Application.Key.Requests;
+using keycontrol.Application.Keys.Commands.RegisterKey;
+using keycontrol.Application.Keys.Requests;
 using keycontrol.Domain.Enums;
 using keycontrol.Infrastructure.Authentication;
 using MediatR;

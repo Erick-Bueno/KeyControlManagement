@@ -1,6 +1,6 @@
 ﻿using keycontrol.Application.Authentication.Responses;
 using keycontrol.Application.Errors;
-using keycontrol.Application.Key.Responses;
+using keycontrol.Application.Keys.Responses;
 using keycontrol.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
