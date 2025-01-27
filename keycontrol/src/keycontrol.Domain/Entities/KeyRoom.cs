@@ -1,5 +1,6 @@
 using keycontrol.Domain.Shared;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Contracts;
 
 namespace keycontrol.Domain.Entities;
 
@@ -15,10 +16,8 @@ public class KeyRoom : Entity
         IdRoom = idRoom; 
         Description = description;
     }
+    public KeyRoom(){}
     public static Result<KeyRoom> Create(int idRoom, string description){
-        if(idRoom.Equals(null)){
-            return Result<KeyRoom>.Failure("Inform an id");
-        }
         if(string.IsNullOrEmpty(description)){
             return Result<KeyRoom>.Failure("Inform an description");
         }
@@ -27,4 +26,5 @@ public class KeyRoom : Entity
         } 
         return Result<KeyRoom>.Success(new KeyRoom(idRoom, description));
     }
+
 }
