@@ -8,7 +8,7 @@ using keycontrol.Domain.Entities;
 using Moq;
 using Xunit;
 
-namespace keycontrol.Tests.Application.Key;
+namespace keycontrol.Tests.Application.Keys;
 
 public class RegisterKeyCommandHandlerTests
 {
