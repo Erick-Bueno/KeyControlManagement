@@ -1,8 +1,8 @@
 ﻿using Bogus;
 using FluentAssertions;
 using keycontrol.Application.Errors;
-using keycontrol.Application.Key.Commands;
-using keycontrol.Application.Key.Responses;
+using keycontrol.Application.Keys.Commands.RegisterKey;
+using keycontrol.Application.Keys.Responses;
 using keycontrol.Application.Repositories;
 using keycontrol.Domain.Entities;
 using Moq;
