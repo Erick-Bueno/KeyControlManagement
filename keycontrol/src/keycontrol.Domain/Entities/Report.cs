@@ -1,4 +1,5 @@
 using keycontrol.Domain.Enums;
+using keycontrol.Domain.Shared;
 using keycontrol.Domain.ValueObjects;
 
 namespace keycontrol.Domain.Entities;
@@ -14,13 +15,13 @@ public class Report : Entity
     public  User User { get;}
     private Report()
     {
-        Status = Status.Available;
+        Status = Status.Unavailable;
     }
-    public static Report Create(User user, KeyRoom key){
+    public static Result<Report> Create(User user, KeyRoom key){
         var report = new Report{
             IdKey = key.Id,
             IdUser = user.Id,
         };
-        return report;
+        return Result<Report>.Success(report);
     }
 }
