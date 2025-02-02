@@ -53,6 +53,7 @@ public abstract class Enumeration<TEnum> : IEquatable<Enumeration<TEnum>>
                 BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
             .Where(fieldInfo => enumerationType.IsAssignableFrom(fieldInfo.FieldType))
             .Select(fieldInfo => (TEnum)fieldInfo.GetValue(default)!);
+            
         return fieldsForType.ToDictionary(x => x.Id);
     }
     public static IReadOnlyCollection<TEnum> GetValues() => _Enumerations.Values.ToList();

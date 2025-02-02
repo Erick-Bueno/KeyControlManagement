@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "XCWS4BpgZZg=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\erick\\Documents\\programacao\\KeyControlManagement\\keycontrol\\src\\keycontrol.Tests\\keycontrol.Infrastruct.Tests\\keycontrol.Infrastruct.Tests.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\erick\\.nuget\\packages\\sonaranalyzer.csharp\\10.4.0.108396\\sonaranalyzer.csharp.10.4.0.108396.nupkg.sha512"
+  ],
+  "logs": []
+}
