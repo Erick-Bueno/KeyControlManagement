@@ -1,8 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "UIErM4OaxHI=",
   "success": true,
   "projectFilePath": "C:\\Users\\erick\\Documents\\programacao\\KeyControlManagement\\keycontrol\\src\\keycontrol.Tests\\keycontrol.Application.Tests\\keycontrol.Application.Tests.csproj",
+=======
+  "dgSpecHash": "qB+VdkuHH70=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\erick\\Documents\\c#\\KeyControlManagement\\keycontrol\\src\\keycontrol.Tests\\keycontrol.Application.Tests\\keycontrol.Application.Tests.csproj",
+>>>>>>> 95c19ed2d672d594eda56d57f76f2d6be4472b5f
   "expectedPackageFiles": [
     "C:\\Users\\erick\\.nuget\\packages\\sonaranalyzer.csharp\\10.4.0.108396\\sonaranalyzer.csharp.10.4.0.108396.nupkg.sha512"
   ],

@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\erick\\Documents\\programacao\\KeyControlManagement\\keycontrol\\src\\keycontrol.Tests\\keycontrol.Application.Tests\\keycontrol.Application.Tests.csproj": {}
   },
   "projects": {
@@ -16,6 +17,23 @@
         "centralPackageVersionsManagementEnabled": true,
         "configFilePaths": [
           "C:\\Users\\erick\\Documents\\programacao\\KeyControlManagement\\keycontrol\\NuGet.Config",
+=======
+    "C:\\Users\\erick\\Documents\\c#\\KeyControlManagement\\keycontrol\\src\\keycontrol.Tests\\keycontrol.Application.Tests\\keycontrol.Application.Tests.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\erick\\Documents\\c#\\KeyControlManagement\\keycontrol\\src\\keycontrol.Tests\\keycontrol.Application.Tests\\keycontrol.Application.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\erick\\Documents\\c#\\KeyControlManagement\\keycontrol\\src\\keycontrol.Tests\\keycontrol.Application.Tests\\keycontrol.Application.Tests.csproj",
+        "projectName": "keycontrol.Application.Tests",
+        "projectPath": "C:\\Users\\erick\\Documents\\c#\\KeyControlManagement\\keycontrol\\src\\keycontrol.Tests\\keycontrol.Application.Tests\\keycontrol.Application.Tests.csproj",
+        "packagesPath": "C:\\Users\\erick\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\erick\\Documents\\c#\\KeyControlManagement\\keycontrol\\src\\keycontrol.Tests\\keycontrol.Application.Tests\\obj\\",
+        "projectStyle": "PackageReference",
+        "centralPackageVersionsManagementEnabled": true,
+        "configFilePaths": [
+          "C:\\Users\\erick\\Documents\\c#\\KeyControlManagement\\keycontrol\\NuGet.Config",
+>>>>>>> 95c19ed2d672d594eda56d57f76f2d6be4472b5f
           "C:\\Users\\erick\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [

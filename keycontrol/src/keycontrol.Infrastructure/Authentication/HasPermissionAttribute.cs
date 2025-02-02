@@ -5,7 +5,7 @@ namespace keycontrol.Infrastructure.Authentication;
 
 public sealed class HasPermissionAttribute : AuthorizeAttribute
 {
-    public HasPermissionAttribute(Permission[] permission) : base(policy: String.Join(",", permission.Select(p => p.ToString())))
+    public HasPermissionAttribute(Permission permission) : base(policy: permission.ToString())
     {
         
     }

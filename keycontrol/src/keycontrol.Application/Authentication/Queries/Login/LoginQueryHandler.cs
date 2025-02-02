@@ -2,8 +2,10 @@ using keycontrol.Application.Authentication.Common.Interfaces.Authentication;
 using keycontrol.Application.Authentication.Common.Interfaces.Cryptography;
 using keycontrol.Application.Authentication.Responses;
 using keycontrol.Application.Errors;
+using keycontrol.Application.Errors.DomainErrors;
 using keycontrol.Application.Repositories;
 using keycontrol.Domain.Entities;
+using keycontrol.Domain.ValueObjects;
 using MediatR;
 using OneOf;
 
@@ -26,19 +28,36 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, OneOf<LoginResponse
 
     public async Task<OneOf<LoginResponse, AppError>> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.FindUserByEmail(request.Email);
+        var emailResult = Email.Create(request.Email);
+        if (emailResult.IsFailure)
+        {
+            return new InvalidEmail(emailResult.ErrorMessage);
+        }
+        var user = await _userRepository.FindUserByEmail(emailResult.Value);
         if (user is null)
         {
             return new UserNotRegistered("User not registered");
         }
-        var passwordIsValid = _bcrypt.VerifyPassword(request.Password, user.Password);
+        var passwordResult = Password.Create(request.Password);
+        if (passwordResult.IsFailure)
+        {
+            return new InvalidPassword(passwordResult.ErrorMessage);
+        }
 
+        var passwordIsValid = _bcrypt.VerifyPassword(request.Password, user.Password);
         if (!passwordIsValid)
         {
             return new InvalidPassword("Invalid password");
         }
         var accessToken = _tokenJwtGenerator.GenerateAccessToken(user.ExternalId);
         var refreshToken = _tokenJwtGenerator.GenerateRefreshToken();
+
+        await ManageLoginToken(user, refreshToken);
+
+        return new LoginResponse(user.ExternalId, user.Name, user.Email.EmailValue, accessToken, refreshToken);
+    }
+    private async Task ManageLoginToken(User user, string refreshToken)
+    {
 
         var findedToken = await _tokenRepository.FindTokenByEmail(user.Email);
 
@@ -48,9 +67,8 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, OneOf<LoginResponse
         }
         else
         {
-            var newToken = new Token(user.Email, refreshToken);
+            var newToken = Token.Create(user.Email, refreshToken);
             await _tokenRepository.AddToken(newToken);
         }
-        return new LoginResponse(user.ExternalId, user.Name, user.Email, accessToken, refreshToken);
     }
 }

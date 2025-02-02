@@ -1,6 +1,6 @@
 ﻿using keycontrol.Application.Extension;
-using keycontrol.Application.Key.Commands;
-using keycontrol.Application.Key.Requests;
+using keycontrol.Application.Keys.Commands.RegisterKey;
+using keycontrol.Application.Keys.Requests;
 using keycontrol.Domain.Enums;
 using keycontrol.Infrastructure.Authentication;
 using MediatR;
@@ -15,7 +15,7 @@ public class KeyController : ApiController
     {
         _sender = sender;
     }
-    [HasPermission(new Permission[] { Permission.Administrator , Permission.ReadMember})]  
+    [HasPermission(Permission.Administrator)]  
     [HttpPost]
     public async Task<IActionResult> AddKey([FromBody] RegisterKeyRequest registerKeyRequest)
     {

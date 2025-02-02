@@ -1,11 +1,12 @@
 ﻿using keycontrol.Application.Errors;
-using keycontrol.Application.Key.Responses;
+using keycontrol.Application.Errors.DomainErrors;
+using keycontrol.Application.Keys.Responses;
 using keycontrol.Application.Repositories;
 using keycontrol.Domain.Entities;
 using MediatR;
 using OneOf;
 
-namespace keycontrol.Application.Key.Commands;
+namespace keycontrol.Application.Keys.Commands.RegisterKey;
 
 public class RegisterKeyCommandHandler : IRequestHandler<RegisterKeyCommand, OneOf<RegisterKeyResponse, AppError>>
 { 
@@ -26,9 +27,12 @@ public class RegisterKeyCommandHandler : IRequestHandler<RegisterKeyCommand, One
             return new RoomNotFinded("Room not found");
         }
 
-        var key = new KeyRoom(isValidRoom.Id, request.Description);
-        await _keyRepository.AddKey(key);
+        var key = KeyRoom.Create(isValidRoom.Id, request.Description);
+        if(key.IsFailure){
+            return new FailCreateKeyRoom(key.ErrorMessage);
+        }
+        await _keyRepository.AddKey(key.Value);
         
-        return new RegisterKeyResponse(key.ExternalId, isValidRoom.ExternalId, key.Description, isValidRoom.Name);
+        return new RegisterKeyResponse(key.Value.ExternalId, isValidRoom.ExternalId, key.Value.Description, isValidRoom.Name);
     }
 }
