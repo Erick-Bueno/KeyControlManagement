@@ -1,3 +1,4 @@
+using keycontrol.Domain.Enums;
 using keycontrol.Domain.Shared;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
@@ -8,6 +9,7 @@ public class KeyRoom : Entity
 {   
     public int IdRoom { get; private set; }
     public string? Description { get; private set; }
+    public Status Status { get; private set; }
     public Room? Room { get; }
     public ICollection<Report>? Reports { get; }
     
@@ -15,6 +17,7 @@ public class KeyRoom : Entity
     {
         IdRoom = idRoom; 
         Description = description;
+        Status = Status.Available;
     }
     public KeyRoom(){}
     public static Result<KeyRoom> Create(int idRoom, string description){
