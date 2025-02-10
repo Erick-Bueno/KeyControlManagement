@@ -1,6 +1,7 @@
 ﻿using keycontrol.Application.Authentication.Responses;
 using keycontrol.Application.Errors;
 using keycontrol.Application.Keys.Responses;
+using keycontrol.Application.Reports.Responses;
 using keycontrol.Application.Rooms.Responses;
 using keycontrol.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -95,6 +96,27 @@ public static class ControllerBaseResponses
             error =>
             {
                 if (error.ErrorType == TypeError.BadRequest.ToString())
+                {
+                    return controller.Problem(statusCode: StatusCodes.Status400BadRequest, title: error.Detail);
+                }
+                if (error.ErrorType == TypeError.ValidationError.ToString())
+                {
+                    return ValidationProblem(controller, error);
+                }
+
+                return controller.Problem();
+            }
+        );
+    }
+
+    public static IActionResult RentKeyResponseBase(this ControllerBase controller, OneOf<RentKeyResponse, AppError> response)
+    {
+        return response.Match(
+            result => controller.Created("Keys/Guid", result),
+
+            error =>
+            {
+                if (error.ErrorType == TypeError.Conflict.ToString())
                 {
                     return controller.Problem(statusCode: StatusCodes.Status400BadRequest, title: error.Detail);
                 }
