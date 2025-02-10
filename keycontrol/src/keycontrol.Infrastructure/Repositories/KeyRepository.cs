@@ -1,6 +1,8 @@
 ﻿using keycontrol.Application.Repositories;
 using keycontrol.Domain.Entities;
 using keycontrol.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace keycontrol.Infrastructure.Repositories;
 
@@ -17,5 +19,10 @@ public class KeyRepository : IKeyRepository
     {
         await _context.keys.AddAsync(key);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<KeyRoom> FindKeyByExternalId(Guid externalId)
+    {
+        return await _context.keys.Where(k => k.ExternalId == externalId).FirstOrDefaultAsync();
     }
 }
