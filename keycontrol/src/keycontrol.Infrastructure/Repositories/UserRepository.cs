@@ -26,4 +26,9 @@ public class UserRepository : IUserRepository
         await _appDbContext.SaveChangesAsync();
         return user;
     }
+
+    public async Task<User> FindUserByExternalId(Guid externalId)
+    {
+        return await _appDbContext.users.Where(u => u.ExternalId == externalId).FirstOrDefaultAsync();
+    }
 }
