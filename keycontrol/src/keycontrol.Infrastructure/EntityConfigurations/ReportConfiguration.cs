@@ -10,7 +10,6 @@ public class ReportConfiguration : IEntityTypeConfiguration<Report>
     {
         builder.HasKey(r => r.Id);
         builder.HasIndex(r => r.ExternalId);
-        builder.Property(r => r.Status).IsRequired();
         builder.Property(r => r.WithdrawalDate).IsRequired();
         builder.HasOne(r => r.User)
             .WithMany(u => u.Reports)
