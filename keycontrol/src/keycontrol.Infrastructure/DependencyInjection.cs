@@ -2,6 +2,7 @@
 using keycontrol.Application.Authentication.Common.Interfaces.Cryptography;
 using keycontrol.Application.Authentication.Common.Interfaces.Services;
 using keycontrol.Application.Repositories;
+using keycontrol.Domain.Entities;
 using keycontrol.Infrastructure.Authentication;
 using keycontrol.Infrastructure.Context;
 using keycontrol.Infrastructure.Cryptography;
@@ -23,6 +24,7 @@ public static class DependencyInjection
         services.AddScoped<ITokenRepository, TokenRepository>();
         services.AddScoped<IKeyRepository, KeyRepository>();
         services.AddScoped<IRoomRepository, RoomRepository>();
+        services.AddScoped<IReportRepository, ReportRepository>();
         services.AddScoped<IBcrypt, Bcrypt>();
         services.AddSingleton<ITokenJwtGenerator, TokenJwtGenerator>();
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
