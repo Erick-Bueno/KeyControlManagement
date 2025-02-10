@@ -10,6 +10,7 @@ public class KeyConfiguration : IEntityTypeConfiguration<KeyRoom>
     {
         builder.HasKey(k => k.Id);
         builder.HasIndex(k => k.ExternalId);
+        builder.Property(k => k.Status).IsRequired();
         builder.HasOne(k => k.Room)
             .WithMany(r => r.Keys)
             .HasForeignKey(k => k.IdRoom);
