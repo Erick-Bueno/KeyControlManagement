@@ -3,6 +3,7 @@ using FluentAssertions;
 using keycontrol.Domain.Entities;
 using keycontrol.Domain.ValueObjects;
 using keycontrol.Infrastructure.Repositories;
+using keycontrol.Tests.Fakers;
 using keycontrol.Tests.Helpers;
 using Xunit;
 
@@ -60,5 +61,23 @@ public class UserRepositoryTests : DatabaseUnitTest
 
         var userFinded = await _dbContext.users.FindAsync(user.Value.Id);
         result.Should().Be(userFinded);
+    }
+      [Fact]
+    public async Task FindUserByExternalId_GivenAnExternalId_ThenReturnUserAsync()
+    {
+        var email = Email.Create(_faker.Person.Email);
+        var user = User.Create(_faker.Person.UserName, email.Value, ValidPassword.Generate());
+
+
+        await _dbContext.users.AddAsync(user.Value);
+        await _dbContext.SaveChangesAsync();
+
+        var result = await _userRepository.FindUserByExternalId(user.Value.ExternalId);
+        
+        result.Email.Should().Be(user.Value.Email);
+        result.ExternalId.Should().Be(user.Value.ExternalId);
+        result.Id.Should().Be(user.Value.Id);
+        result.Name.Should().Be(user.Value.Name);
+        result.Password.Should().Be(user.Value.Password);
     }
 }
