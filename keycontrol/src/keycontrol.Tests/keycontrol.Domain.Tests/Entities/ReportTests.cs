@@ -23,6 +23,5 @@ private readonly Faker _faker = new Faker("pt_BR");
         result.IsSuccess.Should().BeTrue();
         result.Value.IdUser.Should().Be(user.Value.Id);
         result.Value.IdKey.Should().Be(keyRoom.Value.Id);
-        result.Value.Status.Should().Be(Status.Unavailable);
     }
 }

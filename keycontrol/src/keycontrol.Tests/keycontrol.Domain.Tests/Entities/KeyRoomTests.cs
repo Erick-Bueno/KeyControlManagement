@@ -1,6 +1,7 @@
 using Bogus;
 using FluentAssertions;
 using keycontrol.Domain.Entities;
+using keycontrol.Domain.Enums;
 using Xunit;
 
 namespace keycontrol.Tests.Entities;
@@ -35,5 +36,6 @@ public class KeyRoomTests
         result.IsSuccess.Should().BeTrue();
         result.Value.IdRoom.Should().Be(idRoom);
         result.Value.Description.Should().Be(description);
+        result.Value.Status.Should().Be(Status.Available);
     }
 }
