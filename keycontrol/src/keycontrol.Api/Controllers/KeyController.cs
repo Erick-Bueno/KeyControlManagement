@@ -12,9 +12,11 @@ namespace keycontrol.Api.Controllers;
 public class KeyController : ApiController
 {
     private readonly ISender _sender;
-    public KeyController(ISender sender)
+    private readonly IConfiguration _configuration;
+    public KeyController(ISender sender, IConfiguration configuration)
     {
         _sender = sender;
+        _configuration = configuration;
     }
     [HasPermission(Permission.Administrator)]
     [HttpPost]
@@ -22,13 +24,13 @@ public class KeyController : ApiController
     {
         var registerKeyCommand = new RegisterKeyCommand(registerKeyRequest.ExternalIdRoom, registerKeyRequest.Description);
         var result = await _sender.Send(registerKeyCommand);
-        return this.RegisterKeyResponseBase(result);
+        return this.HandleResponseBase(result, new Uri(_configuration["BaseUri"]));
     }
     [HttpPost]
     public async Task<IActionResult> RentKey([FromBody] RentKeyRequest rentKeyRequest)
     {
         var rentKeyCommand = new RentKeyCommand(rentKeyRequest.ExternalIdUser, rentKeyRequest.ExternalIdKey);
         var result = await _sender.Send(rentKeyCommand);
-        return this.RentKeyResponseBase(result);
+        return this.HandleResponseBase(result);
     }
 }

@@ -10,9 +10,12 @@ public class RoomController : ApiController
 {
     private readonly ISender _sender;
 
-    public RoomController(ISender sender)
+    private readonly IConfiguration _configuration;
+
+    public RoomController(ISender sender, IConfiguration configuration)
     {
         _sender = sender;
+        _configuration = configuration;
     }
 
     [HttpPost]
@@ -20,6 +23,6 @@ public class RoomController : ApiController
     {
         var registerRoomCommand = new RegisterRoomCommand(registerRoomRequest.Name);
         var result = await _sender.Send(registerRoomCommand);
-        return this.RegisterRoomResponseBase(result);
+        return this.HandleResponseBase(result, new Uri(_configuration["BaseUri"]));
     }
 }

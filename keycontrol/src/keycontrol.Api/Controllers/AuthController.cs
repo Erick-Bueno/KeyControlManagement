@@ -9,9 +9,11 @@ namespace keycontrol.Api.Controllers;
 public class AuthController : ApiController
 {
     private readonly ISender _sender;
-    public AuthController(ISender sender)
+    private readonly IConfiguration  _configuration;
+    public AuthController(ISender sender, IConfiguration configuration)
     {
         _sender = sender;
+        _configuration = configuration;
     }
 
     [HttpPost("login")]
@@ -19,13 +21,13 @@ public class AuthController : ApiController
     {
         var loginQuery = new LoginQuery(loginRequest.Email, loginRequest.Password);
         var result = await _sender.Send(loginQuery);
-        return this.LoginResponseBase(result);
+        return this.HandleResponseBase(result);
     }
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
     {
         var registerCommand = new RegisterCommand(registerRequest.Name,registerRequest.Email, registerRequest.Password);
         var result = await _sender.Send(registerCommand);
-        return this.RegisterResponseBase(result);
+        return this.HandleResponseBase(result,new Uri(_configuration["BaseUri"]));
     }
 }

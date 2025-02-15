@@ -4,6 +4,7 @@ using keycontrol.Application.Keys.Responses;
 using keycontrol.Application.Reports.Responses;
 using keycontrol.Application.Rooms.Responses;
 using keycontrol.Domain.Enums;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OneOf;
@@ -13,20 +14,19 @@ namespace keycontrol.Application.Extension;
 
 public static class ControllerBaseResponses
 {
-    public static IActionResult RegisterResponseBase(this ControllerBase controller,
-        OneOf<RegisterResponse, AppError> response)
+    private static readonly Dictionary<string, int> errorTypeStatusCode = new(){
+        {TypeError.Conflict.ToString(),StatusCodes.Status409Conflict},
+        {TypeError.BadRequest.ToString(), StatusCodes.Status400BadRequest},
+        {TypeError.NotFound.ToString(), StatusCodes.Status404NotFound}
+    };
+    public static IActionResult HandleResponseBase<T>(this ControllerBase controller, OneOf<T, AppError> response, Uri? createdUri = null)
     {
         return response.Match(
-            result => controller.Created("Users/Guid", result),
+            result => createdUri != null ? controller.Created(createdUri, result) : controller.Ok(result),
             error =>
             {
-                if (error.ErrorType == TypeError.Conflict.ToString())
-                {
-                    return controller.Problem(statusCode: StatusCodes.Status409Conflict, title: error.Detail);
-                }
-                if (error.ErrorType == TypeError.BadRequest.ToString())
-                {
-                    return controller.Problem(statusCode: StatusCodes.Status400BadRequest, title: error.Detail);
+                if(errorTypeStatusCode.TryGetValue(error.ErrorType, out var statusCode )){
+                    return controller.Problem(statusCode: statusCode, title: error.Detail);
                 }
                 if (error.ErrorType == TypeError.ValidationError.ToString())
                 {
@@ -37,99 +37,6 @@ public static class ControllerBaseResponses
             }
         );
     }
-
-    public static IActionResult LoginResponseBase(this ControllerBase controller,
-        OneOf<LoginResponse, AppError> response)
-    {
-        return response.Match(
-            result => controller.Ok(result),
-            error =>
-            {
-                if (error.ErrorType == TypeError.Conflict.ToString())
-                {
-                    return controller.Problem(statusCode: StatusCodes.Status409Conflict, title: error.Detail);
-                }
-                if (error.ErrorType == TypeError.BadRequest.ToString())
-                {
-                    return controller.Problem(statusCode: StatusCodes.Status400BadRequest, title: error.Detail);
-                }
-                if (error.ErrorType == TypeError.ValidationError.ToString())
-                {
-                    return ValidationProblem(controller, error);
-                }
-
-                return controller.Problem();
-            }
-        );
-    }
-
-    public static IActionResult RegisterKeyResponseBase(this ControllerBase controller,
-        OneOf<RegisterKeyResponse, AppError> response)
-    {
-        return response.Match(
-            result => controller.Created("Keys/Guid", result),
-            error =>
-            {
-                if (error.ErrorType == TypeError.Conflict.ToString())
-                {
-                    return controller.Problem(statusCode: StatusCodes.Status409Conflict, title: error.Detail);
-                }
-                if (error.ErrorType == TypeError.BadRequest.ToString())
-                {
-                    return controller.Problem(statusCode: StatusCodes.Status400BadRequest, title: error.Detail);
-                }
-
-                if (error.ErrorType == TypeError.ValidationError.ToString())
-                {
-                    return ValidationProblem(controller, error);
-                }
-
-                return controller.Problem();
-            }
-        );
-    }
-    public static IActionResult RegisterRoomResponseBase(this ControllerBase controller,
-        OneOf<RegisterRoomResponse, AppError> response)
-    {
-        return response.Match(
-            result => controller.Created("Rooms/Guid", result),
-            error =>
-            {
-                if (error.ErrorType == TypeError.BadRequest.ToString())
-                {
-                    return controller.Problem(statusCode: StatusCodes.Status400BadRequest, title: error.Detail);
-                }
-                if (error.ErrorType == TypeError.ValidationError.ToString())
-                {
-                    return ValidationProblem(controller, error);
-                }
-
-                return controller.Problem();
-            }
-        );
-    }
-
-    public static IActionResult RentKeyResponseBase(this ControllerBase controller, OneOf<RentKeyResponse, AppError> response)
-    {
-        return response.Match(
-            result => controller.Created("Keys/Guid", result),
-
-            error =>
-            {
-                if (error.ErrorType == TypeError.Conflict.ToString())
-                {
-                    return controller.Problem(statusCode: StatusCodes.Status400BadRequest, title: error.Detail);
-                }
-                if (error.ErrorType == TypeError.ValidationError.ToString())
-                {
-                    return ValidationProblem(controller, error);
-                }
-
-                return controller.Problem();
-            }
-        );
-    }
-
     private static ActionResult ValidationProblem(ControllerBase controller, AppError error)
     {
         var modelStateDictionary = new ModelStateDictionary();
