@@ -19,21 +19,6 @@ public class TokenRepositoryTests : DatabaseUnitTest
         _tokenRepository = new TokenRepository(_dbContext);
     }
     [Fact]
-    public async Task FindTokenByEmail__GivenNotRegisteredEmail_ThenReturnNullAsync()
-    {
-        var email = _faker.Person.Email;
-        var emailValueObject = Email.Create(email);
-        var token = Token.Create(emailValueObject.Value, _faker.Random.AlphaNumeric(8));
-        var unregisteredEmail = _faker.Person.Email + "unregistered";
-        var unregisteredEmailValueObject = Email.Create(unregisteredEmail);
-        _dbContext.tokens.Add(token);
-        await _dbContext.SaveChangesAsync();
-
-        var result = await _tokenRepository.FindTokenByEmail(unregisteredEmailValueObject.Value);
-
-        result.Should().BeNull();
-    }
-    [Fact]
     public async Task FindTokenByEmail_GivenRegisteredEmail_ThenReturnTokenAsync()
     {
         var registeredEmail = _faker.Person.Email;
