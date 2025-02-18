@@ -16,7 +16,7 @@ public abstract class DatabaseUnitTest : IDisposable
         _connection.Open();
 
         var dbContextOptions = new DbContextOptionsBuilder<AppDbContext>()
-        .UseSqlite("Filename=TokenRepositoryTests.db")
+        .UseSqlite("Filename=UnitTests.db")
         .Options;
 
         _dbContext = new AppDbContextForTests(dbContextOptions);
