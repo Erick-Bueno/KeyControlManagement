@@ -39,7 +39,7 @@ public class RentKeyCommandHandler : IRequestHandler<RentKeyCommand, OneOf<RentK
             return new KeyUnavailable("This Key Is Unavailable");
         }
         var report = Report.Create(userIsFinded, key);
-        await _reportRepository.RentKey(report.Value);
+        await _reportRepository.AddReport(report.Value);
         return new RentKeyResponse(userIsFinded.ExternalId, key.ExternalId, userIsFinded.Name, report.Value.WithdrawalDate);
     }
 }

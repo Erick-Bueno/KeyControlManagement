@@ -13,7 +13,7 @@ public class ReportRepository : IReportRepository
         _appDbContext = appDbContext;
     }
 
-    public async Task<Report> RentKey(Report report)
+    public async Task<Report> AddReport(Report report)
     {
         await _appDbContext.AddAsync(report);
         await _appDbContext.SaveChangesAsync();
