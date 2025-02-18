@@ -24,12 +24,12 @@ public class RentKeyCommandHandler : IRequestHandler<RentKeyCommand, OneOf<RentK
 
     public async Task<OneOf<RentKeyResponse, AppError>> Handle(RentKeyCommand request, CancellationToken cancellationToken)
     {
-        var userIsFinded = await _userRepository.FindUserByExternalId(request.ExternalIdUser);
-        if (userIsFinded == null)
+        var userFound = await _userRepository.FindUserByExternalId(request.ExternalIdUser);
+        if (userFound == null)
         {
             return new UserNotRegistered("User Not Registered");
         }
-        if (userIsFinded.blocked)
+        if (userFound.blocked)
         {
             return new UserBlocked("This User Is Blocked");
         }
@@ -38,8 +38,8 @@ public class RentKeyCommandHandler : IRequestHandler<RentKeyCommand, OneOf<RentK
         {
             return new KeyUnavailable("This Key Is Unavailable");
         }
-        var report = Report.Create(userIsFinded, key);
+        var report = Report.Create(userFound, key);
         await _reportRepository.AddReport(report.Value);
-        return new RentKeyResponse(userIsFinded.ExternalId, key.ExternalId, userIsFinded.Name, report.Value.WithdrawalDate);
+        return new RentKeyResponse(userFound.ExternalId, key.ExternalId, userFound.Name, report.Value.WithdrawalDate);
     }
 }
