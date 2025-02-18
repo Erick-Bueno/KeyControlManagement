@@ -8,7 +8,7 @@ using Moq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace keycontrol.Tests.Application.Rooms;
+namespace keycontrol.Tests.Application.Rooms.Commands.RegisterRoom;
 
 public class RegisterRoomCommandHandlerTests
 {
