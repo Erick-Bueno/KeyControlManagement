@@ -10,7 +10,7 @@ public class User : Entity
     public string Name { get; private set; }
     public Email Email { get; private set; }
     public string Password { get; private set; }
-    public bool blocked { get; private set; }
+    public bool Blocked { get; private set; }
     public ICollection<Report>? Reports { get; }
 
     private User(string name, Email email, string password)
@@ -18,7 +18,7 @@ public class User : Entity
         Name = name;
         Email = email;
         Password = password;
-        blocked = false;
+        Blocked = false;
     }
 
    

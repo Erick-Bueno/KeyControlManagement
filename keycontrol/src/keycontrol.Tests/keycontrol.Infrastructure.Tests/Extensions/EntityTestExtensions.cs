@@ -10,4 +10,8 @@ public static class EntityTestExtensions{
         typeof(Entity).GetProperty("Id", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
             ?.SetValue(entity.Value, id);
     }
+    public static void BlockUser(this Result<User> entity){
+        typeof(User).GetProperty("Blocked", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+        ?.SetValue(entity.Value, true);
+    }
 }

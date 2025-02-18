@@ -29,7 +29,7 @@ public class RentKeyCommandHandler : IRequestHandler<RentKeyCommand, OneOf<RentK
         {
             return new UserNotRegistered("User Not Registered");
         }
-        if (userFound.blocked)
+        if (userFound.Blocked)
         {
             return new UserBlocked("This User Is Blocked");
         }
