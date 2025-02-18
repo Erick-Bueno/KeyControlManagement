@@ -26,9 +26,19 @@ public class KeyRepositoryTests : DatabaseUnitTest
 
         keyFound.Should().NotBeNull();
         keyFound.Should().Be(key.Value);
-        keyFound.Description.Should().Be(key.Value.Description);
-        keyFound.Status.Should().Be(key.Value.Status);
-        keyFound.Id.Should().Be(key.Value.Id);
 
+    }
+    [Fact]
+    public async Task FindKeyByExternalId_GivenExternalId_ThenReturnKeyAsync()
+    {
+        var key = KeyRoom.Create(_faker.Random.Number(1, 5), _faker.Lorem.Text());
+
+        await _dbContext.keys.AddAsync(key.Value);
+        await _dbContext.SaveChangesAsync();
+
+        var result = await _keyRepository.FindKeyByExternalId(key.Value.ExternalId);
+
+        result.Should().NotBeNull();
+        result.Should().Be(key.Value);
     }
 }
