@@ -33,16 +33,16 @@ public class RentKeyCommandHandler : IRequestHandler<RentKeyCommand, OneOf<RentK
         {
             return new UserBlocked("This User Is Blocked");
         }
-        var key = await _keyRepository.FindKeyByExternalId(request.ExternalIdKey);
-        if(key is null){
+        var keyFound = await _keyRepository.FindKeyByExternalId(request.ExternalIdKey);
+        if(keyFound is null){
             return new KeyNotFound("Key not found");
         }
-        if (key.Status == Status.Unavailable)
+        if (keyFound.Status == Status.Unavailable)
         {
             return new KeyUnavailable("This Key Is Unavailable");
         }
-        var report = Report.Create(userFound, key);
+        var report = Report.Create(userFound, keyFound);
         await _reportRepository.AddReport(report.Value);
-        return new RentKeyResponse(userFound.ExternalId, key.ExternalId, userFound.Name, report.Value.WithdrawalDate);
+        return new RentKeyResponse(userFound.ExternalId, keyFound.ExternalId, userFound.Name, report.Value.WithdrawalDate);
     }
 }
