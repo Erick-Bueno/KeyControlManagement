@@ -34,4 +34,7 @@ public class User : Entity
         }
         return Result<User>.Success(new User(name, email, password));
     }
+    public void UpdateStatus(bool isBlocked){
+        Blocked = isBlocked;
+    }
 }
