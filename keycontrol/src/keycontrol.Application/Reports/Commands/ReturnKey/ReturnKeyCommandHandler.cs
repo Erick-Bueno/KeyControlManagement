@@ -11,20 +11,26 @@ public class ReturnKeyCommandHandler : IRequestHandler<ReturnKeyCommand, OneOf<R
 {
     private readonly IUserRepository _userRepository;
     private readonly IKeyRepository _keyRepository;
-    public ReturnKeyCommandHandler(IUserRepository userRepository, IKeyRepository keyRepository)
+    private readonly IReportRepository _reportRepository;
+    public ReturnKeyCommandHandler(IUserRepository userRepository, IKeyRepository keyRepository, IReportRepository reportRepository)
     {
         _userRepository = userRepository;
         _keyRepository = keyRepository;
+        _reportRepository = reportRepository;
     }
 
     public async Task<OneOf<ReturnKeyResponse, AppError>> Handle(ReturnKeyCommand request, CancellationToken cancellationToken)
     {
-    /*     var userFound = await _userRepository.FindUserByExternalId(request.ExternalIdUser);
+        var reportFound = await _reportRepository.FindReportByExternalId(request.ExternalIdReport);
+        if(reportFound is null){
+            return new ReportNotFound("Report not found");
+        }
+        var userFound = await _userRepository.FindUserById(reportFound.IdUser);
         if (userFound is null)
         {
             return new UserNotRegistered("User not registered");
         }
-        var keyFound = await _keyRepository.FindKeyByExternalId(request.ExternalIdKey);
+        var keyFound = await _keyRepository.FindUserById(reportFound.IdKey);
         if (keyFound is null)
         {
             return new KeyNotFound("Key not found");
@@ -32,7 +38,7 @@ public class ReturnKeyCommandHandler : IRequestHandler<ReturnKeyCommand, OneOf<R
         keyFound.UpdateStatus(Status.Available);
         if(userFound.Blocked){
             userFound.UpdateStatus(false);
-        } */
+        }
         //atualizar o usuario
         //atualizar a chave
         //atualizar o report 
