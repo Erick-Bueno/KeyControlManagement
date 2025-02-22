@@ -31,4 +31,9 @@ public class UserRepository : IUserRepository
     {
         return await _appDbContext.users.Where(u => u.ExternalId == externalId).FirstOrDefaultAsync();
     }
+
+    public async Task<User> FindUserById(int id)
+    {
+        return await _appDbContext.users.FindAsync(id);
+    }
 }
