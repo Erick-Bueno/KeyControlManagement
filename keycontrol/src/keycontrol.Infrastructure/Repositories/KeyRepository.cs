@@ -25,4 +25,9 @@ public class KeyRepository : IKeyRepository
     {
         return await _context.keys.Where(k => k.ExternalId == externalId).FirstOrDefaultAsync();
     }
+
+    public async Task<KeyRoom> FindUserById(int id)
+    {
+        return await _context.keys.FindAsync(id);
+    }
 }
