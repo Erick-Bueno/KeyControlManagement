@@ -29,7 +29,7 @@ public class RentKeyCommandHandler : IRequestHandler<RentKeyCommand, OneOf<RentK
         {
             return new UserNotRegistered("User Not Registered");
         }
-        if (userFound.Blocked)
+        if(userFound is {Blocked: true})
         {
             return new UserBlocked("This User Is Blocked");
         }
@@ -37,7 +37,7 @@ public class RentKeyCommandHandler : IRequestHandler<RentKeyCommand, OneOf<RentK
         if(keyFound is null){
             return new KeyNotFound("Key not found");
         }
-        if (keyFound.Status == Status.Unavailable)
+        if(keyFound is {Status: Status.Unavailable})
         {
             return new KeyUnavailable("This Key Is Unavailable");
         }

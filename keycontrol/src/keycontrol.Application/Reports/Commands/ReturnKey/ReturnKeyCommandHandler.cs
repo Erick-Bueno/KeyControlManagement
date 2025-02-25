@@ -36,11 +36,10 @@ public class ReturnKeyCommandHandler : IRequestHandler<ReturnKeyCommand, OneOf<R
             return new KeyNotFound("Key not found");
         }
         keyFound.UpdateStatus(Status.Available);
-        if(userFound.Blocked){
+        if(userFound is {Blocked: true}){
             userFound.UpdateStatus(false);
         }
-        //atualizar o usuario
-        //atualizar a chave
-        //atualizar o report 
+        reportFound.UpdateReturnDate(DateTime.Now);
+       
     }
 }

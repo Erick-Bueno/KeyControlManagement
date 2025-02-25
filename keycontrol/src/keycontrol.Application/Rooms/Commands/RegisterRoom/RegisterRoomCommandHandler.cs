@@ -20,8 +20,8 @@ public class RegisterRoomCommandHandler : IRequestHandler<RegisterRoomCommand, O
     public async Task<OneOf<RegisterRoomResponse, AppError>> Handle(RegisterRoomCommand request, CancellationToken cancellationToken)
     {
        var newRoom = Room.Create(request.Name);
-       if(newRoom.IsFailure){
-            return new FailCreateKeyRoom(newRoom.ErrorMessage);
+       if(newRoom is {IsFailure: true}) {
+           return new FailCreateKeyRoom(newRoom.ErrorMessage);
        }
        await _roomRepository.AddRoom(newRoom.Value);
        return new RegisterRoomResponse(newRoom.Value.ExternalId, newRoom.Value.Name);

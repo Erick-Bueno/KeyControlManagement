@@ -28,7 +28,7 @@ public class RegisterKeyCommandHandler : IRequestHandler<RegisterKeyCommand, One
         }
 
         var key = KeyRoom.Create(isValidRoom.Id, request.Description);
-        if(key.IsFailure){
+        if(key is {IsFailure: true}) {
             return new FailCreateKeyRoom(key.ErrorMessage);
         }
         await _keyRepository.AddKey(key.Value);

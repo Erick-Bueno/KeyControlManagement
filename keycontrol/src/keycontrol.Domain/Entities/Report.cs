@@ -12,15 +12,14 @@ public class Report : Entity
     public DateTime? ReturnDate { get; private set;}
     public  KeyRoom Key { get;}
     public  User User { get;}
-    private Report()
-    {
-
-    }
     public static Result<Report> Create(User user, KeyRoom key){
         var report = new Report{
             IdKey = key.Id,
             IdUser = user.Id,
         };
         return Result<Report>.Success(report);
+    }
+    public void UpdateReturnDate(DateTime returnDate){
+        ReturnDate = returnDate;
     }
 }
